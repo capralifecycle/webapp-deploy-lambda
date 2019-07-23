@@ -126,4 +126,4 @@ python -m webapp_deploy.main s3://my-bucket/my-release.tgz
   successive deployment to read an older deployment log. This is due
   to the fact that S3 is eventually consistent. If this happens the files
   that were deployed by the previous run (being overwritten) will
-  be kept forver.
+  be kept forever, unless they are also references by another deployment.
