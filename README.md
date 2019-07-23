@@ -114,7 +114,7 @@ export DEPLOY_LOG_BUCKET_URL=s3://my-website/deployments.log
 export CF_DISTRIBUTION_ID=EKJ2IPY1KTEAR1
 
 # Adjust artifact path.
-python -m webapp_deploy.lambda s3://my-bucket/my-release.tgz
+python -m webapp_deploy.main s3://my-bucket/my-release.tgz
 ```
 
 ## Notes
