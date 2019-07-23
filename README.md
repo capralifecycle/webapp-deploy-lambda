@@ -1,5 +1,7 @@
 # Lambda for deploying a webapp release
 
+[![Build Status](https://jenkins.capra.tv/buildStatus/icon?job=cals-internal/webapp-deploy-lambda/master)](https://jenkins.capra.tv/job/cals-internal/job/webapp-deploy-lambda/job/master)
+
 This project contains code for an AWS Lambda Function to handle
 deployment of a bundled static web application to a S3 bucket
 while preserving files from previous deployments within a time
