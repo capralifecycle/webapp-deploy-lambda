@@ -1,0 +1,5 @@
+.vscode/
+/.venv/
+/dist/
+/lambda.zip
+__pycache__/
