@@ -70,34 +70,13 @@ aws lambda invoke \
   /tmp/out.log
 ```
 
-## Permissions
+## Template and permissions
 
-Example IAM policy that shows the required permissions:
+See the provided [cloudformation.yaml](./cloudformation.yaml) file that
+contains a fully working example.
 
-```yaml
-PolicyDocument:
-  Version: 2012-10-17
-  Statement:
-    - Effect: Allow
-      Action:
-        - s3:HeadObject
-        - s3:GetObject
-      Resource: arn:aws:s3:::ARTIFACTS_BUCKET/*
-    - Effect: Allow
-      Action:
-        - s3:PutObject
-        - s3:DeleteObject
-      Resource: arn:aws:s3:::DEPLOYED_BUCKET/*
-    - Effect: Allow
-      Action:
-        - s3:GetObject
-        - s3:PutObject
-      Resource: arn:aws:s3:::DEPLOYMENT_LOG_BUCKET/*
-    - Effect: Allow
-      Action:
-        - cloudfront:CreateInvalidation
-      Resource: '*' # Cannot be restricted
-```
+This template is also deployed with the released application and can
+be used as a substack. See the releases page for reference.
 
 ## Development
 

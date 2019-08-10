@@ -57,36 +57,56 @@ buildConfig([
 
     def baseUrl = 's3://capra-webapp-deploy-lambda-releases'
 
+    def baseName = getBaseName(params)
+    patchTemplate(baseName)
+    publish(baseUrl, baseName)
+
     if (params.release_as_version) {
-      def filename = "release-${params.release_as_version}.zip"
-
-      publish("$baseUrl/$filename")
-
-      createGitHubRelease(params.release_as_version, filename)
-    } else {
-      def shortCommit = sh(
-        script: 'git rev-parse --short HEAD',
-        returnStdout: true
-      ).trim()
-
-      publish("$baseUrl/commit-${shortCommit}.zip")
+      createGitHubRelease(params.release_as_version, baseName)
     }
   }
 }
 
-def publish(url) {
-  echo "Uploading to $url"
+def getBaseName(params) {
+  if (params.release_as_version) {
+    "release-${params.release_as_version}"
+  } else {
+    def shortCommit = sh(
+      script: 'git rev-parse --short HEAD',
+      returnStdout: true
+    ).trim()
+    "commit-${shortCommit}"
+  }
+}
+
+def patchTemplate(baseName) {
+  def zipName = getZipName(baseName)
+
+  sh "sed -i 's/INJECTED-DURING-BUILD/$zipName/' cloudformation.yaml"
+}
+
+def getZipName(baseName) {
+  "${baseName}.zip"
+}
+
+def getTemplateName(baseName) {
+  "${baseName}-template.yaml"
+}
+
+def publish(baseUrl, baseName) {
+  echo "Publishing as $baseName"
 
   withAwsRole('arn:aws:iam::923402097046:role/webapp-deploy-lambda-jenkins') {
     stage('Publish') {
       sh """
-        aws s3 cp lambda.zip $url
+        aws s3 cp lambda.zip $baseUrl/${getZipName(baseName)}
+        aws s3 cp cloudformation.yaml $baseUrl/${getTemplateName(baseName)}
       """
     }
   }
 }
 
-def createGitHubRelease(version, filename) {
+def createGitHubRelease(version, baseName) {
   withCredentials([
     string(credentialsId: 'github-calsci-token', variable: 'GITHUB_TOKEN'),
   ]) {
@@ -105,7 +125,7 @@ def createGitHubRelease(version, filename) {
             "tag_name": "$version",
             "target_commitish": "$fullCommit",
             "name": "$version",
-            "body": "Available at https://capra-webapp-deploy-lambda-releases.s3.amazonaws.com/$filename",
+            "body": "Code (zip) available at https://capra-webapp-deploy-lambda-releases.s3.amazonaws.com/${getZipName(baseName)}\\n\\nCloudFormation template available at https://capra-webapp-deploy-lambda-releases.s3.amazonaws.com/${getTemplateName(baseName)}",
             "draft": false,
             "prerelease": false
           }' \\

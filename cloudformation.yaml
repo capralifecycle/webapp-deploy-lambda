@@ -1,0 +1,97 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  AllowInvokeRoleArn:
+    Description: ARN of a IAM Role that will be allowed to invoke the deploy function
+    Type: String
+  CfDistributionId:
+    Description: Optional CloudFront Distribution ID to be invalidated after deploy
+    Type: String
+  DeployCodeS3Bucket:
+    Description: Name of S3 bucket where the lambda function code is located
+    Default: capra-webapp-deploy-lambda-releases
+    Type: String
+  DeployCodeS3Key:
+    Description: S3 object in the bucket with the lambda function code (zip file)
+    Default: INJECTED-DURING-BUILD
+    Type: String
+  ExcludePattern:
+    Description: Optional regex for patterns of files to be discarded during deployment
+    Type: String
+  FunctionName:
+    Description: Name of the lambda function to be created
+    Type: String
+  ReleasesBucketName:
+    Description: Name of S3 bucket where the artifacts to be deployed are stored
+    Type: String
+  TargetBucketName:
+    Description: >-
+      Name of S3 bucket where the contents of the artifacts will be deployed.
+      The files will be deployed under the key "web", which is then expected
+      to be the origin for the CloudFront distribution
+    Type: String
+
+Resources:
+
+  DeployFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket: !Ref DeployCodeS3Bucket
+        S3Key: !Ref DeployCodeS3Key
+      Environment:
+        Variables:
+          CF_DISTRIBUTION_ID: !Ref CfDistributionId
+          DEPLOY_LOG_BUCKET_URL: !Sub 's3://${TargetBucketName}/deployments.log'
+          EXCLUDE_PATTERN: !Ref ExcludePattern
+          TARGET_BUCKET_URL: !Sub 's3://${TargetBucketName}/web'
+      Handler: webapp_deploy.main.handler
+      FunctionName: !Ref FunctionName
+      MemorySize: 128
+      ReservedConcurrentExecutions: 1
+      Role: !GetAtt ExecutionRole.Arn
+      Runtime: python3.7
+      Timeout: 120
+
+  ExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+      Policies:
+        - PolicyName: custom
+          PolicyDocument:
+            Statement:
+            - Effect: Allow
+              Action:
+                - s3:HeadObject
+                - s3:GetObject
+              Resource: !Sub 'arn:aws:s3:::${ReleasesBucketName}/*'
+            - Effect: Allow
+              Action:
+                - s3:PutObject
+                - s3:DeleteObject
+              Resource: !Sub 'arn:aws:s3:::${TargetBucketName}/web/*'
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+                - s3:PutObject
+              Resource: !Sub 'arn:aws:s3:::${TargetBucketName}/deployments.log'
+            - Effect: Allow
+              Action:
+                - cloudfront:CreateInvalidation
+              Resource: '*' # Cannot be restricted
+
+  DeployPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref DeployFunction
+      Action: lambda:InvokeFunction
+      Principal: !Ref AllowInvokeRoleArn
