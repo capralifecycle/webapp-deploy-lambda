@@ -122,7 +122,7 @@ def createGitHubRelease(version, baseName) {
         curl \\
           --fail \\
           --data '{
-            "tag_name": "$version",
+            "tag_name": "v$version",
             "target_commitish": "$fullCommit",
             "name": "$version",
             "body": "Code (zip) available at https://capra-webapp-deploy-lambda-releases.s3.amazonaws.com/${getZipName(baseName)}\\n\\nCloudFormation template available at https://capra-webapp-deploy-lambda-releases.s3.amazonaws.com/${getTemplateName(baseName)}",
