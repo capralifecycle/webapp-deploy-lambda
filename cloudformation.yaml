@@ -5,6 +5,7 @@ Parameters:
     Description: ARN of a IAM Role that will be allowed to invoke the deploy function
     Type: String
   CfDistributionId:
+    Default: ''
     Description: Optional CloudFront Distribution ID to be invalidated after deploy
     Type: String
   DeployCodeS3Bucket:
@@ -16,6 +17,7 @@ Parameters:
     Default: INJECTED-DURING-BUILD
     Type: String
   ExcludePattern:
+    Default: ''
     Description: Optional regex for patterns of files to be discarded during deployment
     Type: String
   FunctionName:
