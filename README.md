@@ -76,7 +76,7 @@ See the provided [cloudformation.yaml](./cloudformation.yaml) file that
 contains a fully working example.
 
 This template is also deployed with the released application and can
-be used as a substack. See the releases page for reference.
+be used as a nested stack. See the releases page for reference.
 
 ## Development
 
