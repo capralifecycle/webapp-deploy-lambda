@@ -59,6 +59,11 @@ buildConfig([
 
     def baseName = getBaseName(params)
     patchTemplate(baseName)
+
+    stage('Validate template') {
+      validateTemplate()
+    }
+
     publish(baseUrl, baseName)
 
     if (params.release_as_version) {
@@ -83,6 +88,11 @@ def patchTemplate(baseName) {
   def zipName = getZipName(baseName)
 
   sh "sed -i 's/INJECTED-DURING-BUILD/$zipName/' cloudformation.yaml"
+}
+
+def validateTemplate() {
+  // Must define region so the aws command doesn't complain.
+  sh "AWS_DEFAULT_REGION=eu-central-1 aws cloudformation validate-template --template-body file://cloudformation.yaml"
 }
 
 def getZipName(baseName) {
