@@ -1,11 +1,14 @@
 {
-  "extends": [
-    "config:base"
-  ],
+  "extends": ["config:base"],
   "packageRules": [
     {
       "packageNames": ["boto3"],
       "extends": ["schedule:monthly"],
+      "automerge": true,
+      "automergeType": "branch"
+    },
+    {
+      "packageNames": ["black", "flake8"],
       "automerge": true,
       "automergeType": "branch"
     }
