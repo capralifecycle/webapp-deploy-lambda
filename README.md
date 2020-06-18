@@ -1,8 +1,8 @@
-# Lambda for deploying a webapp release
+# CDK Construct for deploying a webapp release
 
 [![Build Status](https://jenkins.capra.tv/buildStatus/icon?job=cals-internal/webapp-deploy-lambda/master)](https://jenkins.capra.tv/job/cals-internal/job/webapp-deploy-lambda/job/master)
 
-This project contains code for an AWS Lambda Function to handle
+This project contains a CDK Construct for an AWS Lambda Function to handle
 deployment of a bundled static web application to a S3 bucket
 while preserving files from previous deployments within a time
 threshold.
@@ -38,28 +38,7 @@ be disrupted. To keep this promise we keep the newest deployment that
 happened more than five days ago, and delete files from older ones that no
 longer have any refrence to them.
 
-## Lambda configuration
-
-Required environment variables:
-
-- `TARGET_BUCKET_URL`. A full S3 url with the directory files should be
-  deployed to. E.g. `s3://my-bucket` or `s3://my-bucket/web`.
-- `DEPLOY_LOG_BUCKET_URL`. A full S3 url for a object that will hold
-  the deployment log file. E.g. `s3://my-bucket/deployments.log`.
-- `CF_DISTRIBUTION_ID`. Optional. A CloudFront distribution URL that will be
-  invalidated after deploy.
-- `EXCLUDE_PATTERN`. Optional. A regex. If a search using this regex
-  matches a filename, it will be excluded. Example: `\.map$` will exclude
-  `js/myapp-1b22c248f.js.map`.
-- `EXPIRE_SECONDS`. Optional. The time when a deployment is considered old
-  and will be deleted unless it is the newest old deployment. Defaults
-  to five days.
-
-## Executing the lambda
-
-The handler should be set to `webapp_deploy.main.handler`.
-
-After setting up your lambda, you can invoke it like this:
+## Triggering a deployment
 
 ```bash
 aws lambda invoke \
@@ -70,14 +49,6 @@ aws lambda invoke \
   /tmp/out.log
 ```
 
-## Template and permissions
-
-See the provided [cloudformation.yaml](./cloudformation.yaml) file that
-contains a fully working example.
-
-This template is also deployed with the released application and can
-be used as a nested stack. See the releases page for reference.
-
 ## Development
 
 Testing locally:
@@ -87,8 +58,9 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 
-# Adjust to your project.
+# Adjust to your project. See config.py for full list.
 export TARGET_BUCKET_URL=s3://my-website/web
+export EXPIRE_SECONDS=86400
 export DEPLOY_LOG_BUCKET_URL=s3://my-website/deployments.log
 export CF_DISTRIBUTION_ID=EKJ2IPY1KTEAR1
 
