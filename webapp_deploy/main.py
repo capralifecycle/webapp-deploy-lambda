@@ -164,7 +164,7 @@ def deploy(artifact_s3_url, target_s3_url, exclude_pattern):
     temp_file.close()
     shutil.rmtree(temp_dir)
 
-    return [DeployItem(deploy_time, filename) for [i, _, _] in all_files]
+    return [DeployItem(deploy_time, fname) for [fname, _, _] in all_files]
 
 
 def fetch_deployment_log(s3_deployments_log):
