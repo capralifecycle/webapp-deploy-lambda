@@ -92,6 +92,10 @@ export class WebappDeploy extends cdk.Construct {
           resources: [props.webBucket.arnForObjects("deployments.log")],
         }),
         new iam.PolicyStatement({
+          actions: ["s3:List*"],
+          resources: [props.webBucket.bucketArn],
+        }),
+        new iam.PolicyStatement({
           actions: ["cloudfront:CreateInvalidation"],
           // Cannot be restricted
           resources: ["*"],
