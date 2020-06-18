@@ -71,9 +71,7 @@ export class WebappDeploy extends cdk.Construct {
     }
 
     this.deployFn = new lambda.Function(this, "Resource", {
-      code: lambda.Code.fromAsset(
-        path.join(__dirname, "../dist/webapp_deploy"),
-      ),
+      code: lambda.Code.fromAsset(path.join(__dirname, "../dist")),
       environment,
       functionName: props.functionName ?? cdk.PhysicalName.GENERATE_IF_NEEDED,
       handler: "webapp_deploy.main.handler",
