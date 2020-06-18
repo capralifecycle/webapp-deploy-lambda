@@ -1,5 +1,8 @@
 .vscode/
 /.venv/
 /dist/
-/lambda.zip
 __pycache__/
+*.d.ts
+node_modules/
+/lib/
+/*.tgz

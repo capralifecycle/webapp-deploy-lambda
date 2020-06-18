@@ -1,0 +1,70 @@
+{
+  "name": "@capraconsulting/webapp-deploy-lambda",
+  "version": "0.0.0-development",
+  "description": "CDK construct for deploying a webapp release to S3 and CloudFront",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/capraconsulting/webapp-deploy-lambda"
+  },
+  "scripts": {
+    "build": "./build.sh && tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "cdk",
+    "cloudfront",
+    "deployment",
+    "s3",
+    "webapp"
+  ],
+  "license": "Apache-2.0",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "dist/webapp_deploy/**/*",
+    "lib/**/*"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "1.45.0",
+    "@aws-cdk/aws-iam": "1.45.0",
+    "@aws-cdk/aws-lambda": "1.45.0",
+    "@aws-cdk/aws-s3": "1.45.0",
+    "@aws-cdk/core": "1.45.0",
+    "@commitlint/cli": "8.3.5",
+    "@commitlint/config-conventional": "8.3.4",
+    "@liflig/cdk": "1.10.0",
+    "@types/jest": "26.0.0",
+    "@types/node": "13.13.12",
+    "@typescript-eslint/eslint-plugin": "3.2.0",
+    "@typescript-eslint/parser": "3.2.0",
+    "eslint": "7.2.0",
+    "eslint-config-prettier": "6.11.0",
+    "eslint-plugin-deprecation": "1.1.0",
+    "eslint-plugin-prettier": "3.1.3",
+    "husky": "4.2.5",
+    "jest": "26.0.1",
+    "jest-cdk-snapshot": "1.3.0",
+    "prettier": "2.0.5",
+    "ts-jest": "26.1.0",
+    "ts-node": "8.10.2",
+    "typescript": "3.9.5"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "peerDependencies": {
+    "@aws-cdk/aws-iam": "^1.45.0",
+    "@aws-cdk/aws-lambda": "^1.45.0",
+    "@aws-cdk/aws-s3": "^1.45.0",
+    "@aws-cdk/core": "^1.45.0"
+  }
+}

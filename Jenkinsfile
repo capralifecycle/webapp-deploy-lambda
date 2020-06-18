@@ -17,40 +17,27 @@ buildConfig([
     def img = docker.image('circleci/python:3.7')
     img.pull() // Ensure latest version.
     img.inside {
-      stage('Install dependencies') {
+      stage('Lint and test python code') {
         sh '''
           python3 -m venv .venv
           . .venv/bin/activate
           pip install -r requirements.txt
+          make py-lint py-test
         '''
-      }
-
-      stage('Lint') {
-        sh '''
-          . .venv/bin/activate
-          make lint
-        '''
-      }
-
-      stage('Test') {
-        sh '''
-          . .venv/bin/activate
-          make test
-        '''
-      }
-
-      stage('Build') {
-        sh 'make build'
       }
     }
 
-    stage('Validate template') {
-      validateTemplate()
+    insideToolImage("node:12-alpine") {
+      stage('Install dependencies and build') {
+        sh 'npm ci'
+      }
+
+      stage('Lint and test') {
+        sh 'npm run lint'
+        sh 'npm run test'
+      }
+
+      // TODO: semantic-release
     }
   }
-}
-
-def validateTemplate() {
-  // Must define region so the aws command doesn't complain.
-  sh "AWS_DEFAULT_REGION=eu-central-1 aws cloudformation validate-template --template-body file://cloudformation.yaml"
 }
