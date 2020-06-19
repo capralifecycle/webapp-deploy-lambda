@@ -4,7 +4,7 @@ import * as s3 from "@aws-cdk/aws-s3"
 import * as cdk from "@aws-cdk/core"
 import * as path from "path"
 
-interface Props {
+export interface WebappDeployProps {
   /**
    * S3 bucket where the artifacts to be deployed are stored.
    */
@@ -51,7 +51,7 @@ interface Props {
 export class WebappDeploy extends cdk.Construct {
   readonly deployFn: lambda.Function
 
-  constructor(scope: cdk.Construct, id: string, props: Props) {
+  constructor(scope: cdk.Construct, id: string, props: WebappDeployProps) {
     super(scope, id)
 
     const environment: Record<string, string> = {
