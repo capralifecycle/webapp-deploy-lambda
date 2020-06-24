@@ -81,7 +81,7 @@ def cleanup_delete_files(s3_target, files):
     result = s3_client.delete_objects(
         Bucket=s3_target_bucket, Delete={"Objects": objects}
     )
-    if len(result["Errors"]) > 0:
+    if "Errors" in result and len(result["Errors"]) > 0:
         logger.warn("Errors during delete: %s" % result["Errors"])
 
 
