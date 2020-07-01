@@ -40,7 +40,7 @@
     "@aws-cdk/core": "1.47.0",
     "@commitlint/cli": "9.0.1",
     "@commitlint/config-conventional": "9.0.1",
-    "@liflig/cdk": "1.13.2",
+    "@liflig/cdk": "1.14.0",
     "@types/jest": "26.0.3",
     "@types/node": "13.13.12",
     "@typescript-eslint/eslint-plugin": "3.4.0",
