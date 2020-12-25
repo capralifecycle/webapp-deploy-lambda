@@ -33,11 +33,11 @@
     "access": "public"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.79.0",
-    "@aws-cdk/aws-iam": "1.79.0",
-    "@aws-cdk/aws-lambda": "1.79.0",
-    "@aws-cdk/aws-s3": "1.79.0",
-    "@aws-cdk/core": "1.79.0",
+    "@aws-cdk/assert": "1.80.0",
+    "@aws-cdk/aws-iam": "1.80.0",
+    "@aws-cdk/aws-lambda": "1.80.0",
+    "@aws-cdk/aws-s3": "1.80.0",
+    "@aws-cdk/core": "1.80.0",
     "@commitlint/cli": "11.0.0",
     "@commitlint/config-conventional": "11.0.0",
     "@liflig/cdk": "1.25.1",
