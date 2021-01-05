@@ -107,9 +107,9 @@ Object {
         "Environment": Object {
           "Variables": Object {
             "CF_DISTRIBUTION_ID": "EKJ2IPY1KTEAR1",
-            "DEPLOY_LOG_BUCKET_URL": "s3://stack1stack1webbucket4a67ef3a90b336dbc074/deployments.log",
+            "DEPLOY_LOG_BUCKET_URL": "s3://web-bucket/deployments.log",
             "EXPIRE_SECONDS": "432000",
-            "TARGET_BUCKET_URL": "s3://stack1stack1webbucket4a67ef3a90b336dbc074/web",
+            "TARGET_BUCKET_URL": "s3://web-bucket/web",
           },
         },
         "Handler": "webapp_deploy.main.handler",
@@ -120,7 +120,7 @@ Object {
             "Arn",
           ],
         },
-        "Runtime": "python3.7",
+        "Runtime": "python3.8",
         "Timeout": 120,
       },
       "Type": "AWS::Lambda::Function",
@@ -161,82 +161,551 @@ Object {
         "PolicyDocument": Object {
           "Statement": Array [
             Object {
-              "Action": Array [
-                "s3:HeadObject",
-                "s3:GetObject",
-              ],
+              "Action": "cloudfront:CreateInvalidation",
               "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:",
-                    Object {
-                      "Ref": "AWS::Partition",
-                    },
-                    ":s3:::stack1ack1buildsbucket2655d1d2c6f4cd55937f/*",
-                  ],
-                ],
-              },
+              "Resource": "*",
             },
             Object {
               "Action": Array [
-                "s3:PutObject",
-                "s3:DeleteObject",
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*",
               ],
               "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:",
-                    Object {
-                      "Ref": "AWS::Partition",
-                    },
-                    ":s3:::stack1stack1webbucket4a67ef3a90b336dbc074/web/*",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::web-bucket",
+                    ],
                   ],
-                ],
-              },
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::web-bucket/*",
+                    ],
+                  ],
+                },
+              ],
             },
             Object {
               "Action": Array [
-                "s3:GetObject",
-                "s3:PutObject",
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
               ],
               "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:",
-                    Object {
-                      "Ref": "AWS::Partition",
-                    },
-                    ":s3:::stack1stack1webbucket4a67ef3a90b336dbc074/deployments.log",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::builds-bucket",
+                    ],
                   ],
-                ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::builds-bucket/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "WebappDeployServiceRoleDefaultPolicyE446530F",
+        "Roles": Array [
+          Object {
+            "Ref": "WebappDeployServiceRole78F79841",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+  },
+}
+`;
+
+exports[`WebappDeploy with source 1`] = `
+Object {
+  "Parameters": Object {
+    "AssetParameters4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956ArtifactHashD15A2D11": Object {
+      "Description": "Artifact hash for asset \\"4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956\\"",
+      "Type": "String",
+    },
+    "AssetParameters4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956S3Bucket72B03BC9": Object {
+      "Description": "S3 bucket for asset \\"4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956\\"",
+      "Type": "String",
+    },
+    "AssetParameters4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956S3VersionKey520B7554": Object {
+      "Description": "S3 key for asset version \\"4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956\\"",
+      "Type": "String",
+    },
+    "AssetParameters7840802c17e11cefc6089ec0cd6694cb713565e432ff7995765459088842a5f5ArtifactHash7A8B67D9": Object {
+      "Description": "Artifact hash for asset \\"7840802c17e11cefc6089ec0cd6694cb713565e432ff7995765459088842a5f5\\"",
+      "Type": "String",
+    },
+    "AssetParameters7840802c17e11cefc6089ec0cd6694cb713565e432ff7995765459088842a5f5S3BucketC8BC12BD": Object {
+      "Description": "S3 bucket for asset \\"7840802c17e11cefc6089ec0cd6694cb713565e432ff7995765459088842a5f5\\"",
+      "Type": "String",
+    },
+    "AssetParameters7840802c17e11cefc6089ec0cd6694cb713565e432ff7995765459088842a5f5S3VersionKey55AEC640": Object {
+      "Description": "S3 key for asset version \\"7840802c17e11cefc6089ec0cd6694cb713565e432ff7995765459088842a5f5\\"",
+      "Type": "String",
+    },
+    "AssetParametersa031e508958938f8422daeeac500bb201eeaadb51e930882c6f34a3f5ec44c87ArtifactHashA7398780": Object {
+      "Description": "Artifact hash for asset \\"a031e508958938f8422daeeac500bb201eeaadb51e930882c6f34a3f5ec44c87\\"",
+      "Type": "String",
+    },
+    "AssetParametersa031e508958938f8422daeeac500bb201eeaadb51e930882c6f34a3f5ec44c87S3Bucket61DFC8DF": Object {
+      "Description": "S3 bucket for asset \\"a031e508958938f8422daeeac500bb201eeaadb51e930882c6f34a3f5ec44c87\\"",
+      "Type": "String",
+    },
+    "AssetParametersa031e508958938f8422daeeac500bb201eeaadb51e930882c6f34a3f5ec44c87S3VersionKey02700817": Object {
+      "Description": "S3 key for asset version \\"a031e508958938f8422daeeac500bb201eeaadb51e930882c6f34a3f5ec44c87\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "AWS679f53fac002430cb0da5b7982bd22872D164C4C": Object {
+      "DependsOn": Array [
+        "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameters4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956S3Bucket72B03BC9",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956S3VersionKey520B7554",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956S3VersionKey520B7554",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+        "Timeout": 120,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
               },
             },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "WebappDeploy4D661524": Object {
+      "DependsOn": Array [
+        "WebappDeployServiceRoleDefaultPolicyE446530F",
+        "WebappDeployServiceRole78F79841",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersa031e508958938f8422daeeac500bb201eeaadb51e930882c6f34a3f5ec44c87S3Bucket61DFC8DF",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersa031e508958938f8422daeeac500bb201eeaadb51e930882c6f34a3f5ec44c87S3VersionKey02700817",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersa031e508958938f8422daeeac500bb201eeaadb51e930882c6f34a3f5ec44c87S3VersionKey02700817",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "CF_DISTRIBUTION_ID": "EKJ2IPY1KTEAR1",
+            "DEPLOY_LOG_BUCKET_URL": "s3://example-bucket/deployments.log",
+            "EXPIRE_SECONDS": "432000",
+            "TARGET_BUCKET_URL": "s3://example-bucket/web",
+          },
+        },
+        "Handler": "webapp_deploy.main.handler",
+        "ReservedConcurrentExecutions": 1,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "WebappDeployServiceRole78F79841",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.8",
+        "Timeout": 120,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "WebappDeployCustomResourceCF959726": Object {
+      "DeletionPolicy": "Delete",
+      "DependsOn": Array [
+        "WebappDeployCustomResourceCustomResourcePolicyB85F7B61",
+      ],
+      "Properties": Object {
+        "Create": Object {
+          "action": "invoke",
+          "parameters": Object {
+            "FunctionName": Object {
+              "Ref": "WebappDeploy4D661524",
+            },
+            "Payload": Object {
+              "Fn::Join": Array [
+                "",
+                Array [
+                  "{\\"artifactS3Url\\":\\"s3://",
+                  Object {
+                    "Ref": "AssetParameters7840802c17e11cefc6089ec0cd6694cb713565e432ff7995765459088842a5f5S3BucketC8BC12BD",
+                  },
+                  "/",
+                  Object {
+                    "Fn::Select": Array [
+                      0,
+                      Object {
+                        "Fn::Split": Array [
+                          "||",
+                          Object {
+                            "Ref": "AssetParameters7840802c17e11cefc6089ec0cd6694cb713565e432ff7995765459088842a5f5S3VersionKey55AEC640",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  Object {
+                    "Fn::Select": Array [
+                      1,
+                      Object {
+                        "Fn::Split": Array [
+                          "||",
+                          Object {
+                            "Ref": "AssetParameters7840802c17e11cefc6089ec0cd6694cb713565e432ff7995765459088842a5f5S3VersionKey55AEC640",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  "\\"}",
+                ],
+              ],
+            },
+          },
+          "physicalResourceId": Object {
+            "id": "webapp-deploy",
+          },
+          "service": "Lambda",
+        },
+        "InstallLatestAwsSdk": true,
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+            "Arn",
+          ],
+        },
+        "Update": Object {
+          "action": "invoke",
+          "parameters": Object {
+            "FunctionName": Object {
+              "Ref": "WebappDeploy4D661524",
+            },
+            "Payload": Object {
+              "Fn::Join": Array [
+                "",
+                Array [
+                  "{\\"artifactS3Url\\":\\"s3://",
+                  Object {
+                    "Ref": "AssetParameters7840802c17e11cefc6089ec0cd6694cb713565e432ff7995765459088842a5f5S3BucketC8BC12BD",
+                  },
+                  "/",
+                  Object {
+                    "Fn::Select": Array [
+                      0,
+                      Object {
+                        "Fn::Split": Array [
+                          "||",
+                          Object {
+                            "Ref": "AssetParameters7840802c17e11cefc6089ec0cd6694cb713565e432ff7995765459088842a5f5S3VersionKey55AEC640",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  Object {
+                    "Fn::Select": Array [
+                      1,
+                      Object {
+                        "Fn::Split": Array [
+                          "||",
+                          Object {
+                            "Ref": "AssetParameters7840802c17e11cefc6089ec0cd6694cb713565e432ff7995765459088842a5f5S3VersionKey55AEC640",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  "\\"}",
+                ],
+              ],
+            },
+          },
+          "physicalResourceId": Object {
+            "id": "webapp-deploy",
+          },
+          "service": "Lambda",
+        },
+      },
+      "Type": "Custom::AWS",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "WebappDeployCustomResourceCustomResourcePolicyB85F7B61": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
             Object {
-              "Action": "s3:List*",
+              "Action": "lambda:InvokeFunction",
               "Effect": "Allow",
               "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:",
-                    Object {
-                      "Ref": "AWS::Partition",
-                    },
-                    ":s3:::stack1stack1webbucket4a67ef3a90b336dbc074",
-                  ],
+                "Fn::GetAtt": Array [
+                  "WebappDeploy4D661524",
+                  "Arn",
                 ],
               },
             },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "WebappDeployCustomResourceCustomResourcePolicyB85F7B61",
+        "Roles": Array [
+          Object {
+            "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "WebappDeployServiceRole78F79841": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "WebappDeployServiceRoleDefaultPolicyE446530F": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
             Object {
               "Action": "cloudfront:CreateInvalidation",
               "Effect": "Allow",
               "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::example-bucket",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::example-bucket/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "AssetParameters7840802c17e11cefc6089ec0cd6694cb713565e432ff7995765459088842a5f5S3BucketC8BC12BD",
+                      },
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "AssetParameters7840802c17e11cefc6089ec0cd6694cb713565e432ff7995765459088842a5f5S3BucketC8BC12BD",
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
             },
           ],
           "Version": "2012-10-17",

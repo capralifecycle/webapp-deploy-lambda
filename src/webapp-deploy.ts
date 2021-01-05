@@ -1,20 +1,32 @@
+import * as cloudfront from "@aws-cdk/aws-cloudfront"
 import * as iam from "@aws-cdk/aws-iam"
 import * as lambda from "@aws-cdk/aws-lambda"
 import * as s3 from "@aws-cdk/aws-s3"
 import * as cdk from "@aws-cdk/core"
+import {
+  AwsCustomResource,
+  AwsCustomResourcePolicy,
+  PhysicalResourceId,
+} from "@aws-cdk/custom-resources"
 import * as path from "path"
+import { ISource } from "./source"
 
 export interface WebappDeployProps {
   /**
-   * S3 bucket where the artifacts to be deployed are stored.
-   */
-  buildsBucket: s3.IBucket
-  /**
-   * CloudFront Distribution ID to be invalidated after deploy.
+   * Optional S3 bucket that can be used for deployment from outside CDK.
+   *
+   * If specified a policy is added so the deploy function can read from
+   * the bucket.
    *
    * @default - none
    */
-  distributionId?: string
+  buildsBucket?: s3.IBucket
+  /**
+   * CloudFront Distribution to be invalidated after deploy.
+   *
+   * @default - none
+   */
+  distribution?: cloudfront.IDistribution
   /**
    * Regex for patterns of files to be discarded during deployment.
    *
@@ -42,6 +54,12 @@ export interface WebappDeployProps {
    * to be the origin for the CloudFront distribution
    */
   webBucket: s3.IBucket
+  /**
+   * Specific artifact to be deployed to the bucket during CDK deployment.
+   *
+   * @default - none
+   */
+  source?: ISource
 }
 
 /**
@@ -62,8 +80,8 @@ export class WebappDeploy extends cdk.Construct {
       TARGET_BUCKET_URL: `s3://${props.webBucket.bucketName}/web`,
     }
 
-    if (props.distributionId != null) {
-      environment.CF_DISTRIBUTION_ID = props.distributionId
+    if (props.distribution != null) {
+      environment.CF_DISTRIBUTION_ID = props.distribution.distributionId
     }
 
     if (props.excludePattern != null) {
@@ -80,27 +98,43 @@ export class WebappDeploy extends cdk.Construct {
       timeout: cdk.Duration.minutes(2),
       initialPolicy: [
         new iam.PolicyStatement({
-          actions: ["s3:HeadObject", "s3:GetObject"],
-          resources: [props.buildsBucket.arnForObjects("*")],
-        }),
-        new iam.PolicyStatement({
-          actions: ["s3:PutObject", "s3:DeleteObject"],
-          resources: [props.webBucket.arnForObjects("web/*")],
-        }),
-        new iam.PolicyStatement({
-          actions: ["s3:GetObject", "s3:PutObject"],
-          resources: [props.webBucket.arnForObjects("deployments.log")],
-        }),
-        new iam.PolicyStatement({
-          actions: ["s3:List*"],
-          resources: [props.webBucket.bucketArn],
-        }),
-        new iam.PolicyStatement({
           actions: ["cloudfront:CreateInvalidation"],
           // Cannot be restricted
           resources: ["*"],
         }),
       ],
     })
+
+    props.webBucket.grantReadWrite(this.deployFn)
+
+    if (props.buildsBucket) {
+      props.buildsBucket.grantRead(this.deployFn)
+    }
+
+    if (props.source) {
+      const source = props.source.bind(this, {
+        handlerRole: this.deployFn.role!,
+      })
+
+      new AwsCustomResource(this, "CustomResource", {
+        onUpdate: {
+          service: "Lambda",
+          action: "invoke",
+          physicalResourceId: PhysicalResourceId.of("webapp-deploy"),
+          parameters: {
+            FunctionName: this.deployFn.functionName,
+            Payload: cdk.Stack.of(scope).toJsonString({
+              artifactS3Url: `s3://${source.bucket.bucketName}/${source.zipObjectKey}`,
+            }),
+          },
+        },
+        policy: AwsCustomResourcePolicy.fromStatements([
+          new iam.PolicyStatement({
+            actions: ["lambda:InvokeFunction"],
+            resources: [this.deployFn.functionArn],
+          }),
+        ]),
+      })
+    }
   }
 }
