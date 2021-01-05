@@ -6,6 +6,7 @@ import sys
 import tarfile
 import tempfile
 import time
+import zipfile
 from contextlib import closing
 
 from botocore.exceptions import ClientError
@@ -113,10 +114,42 @@ def upload(bucket, files):
         s3_client.upload_file(local_path, bucket, s3_key, ExtraArgs=extra_args)
 
 
+def extract(artifact_s3_url, source, dest, exclude_pattern):
+    pattern_compiled = (
+        re.compile(exclude_pattern) if exclude_pattern is not None else None
+    )
+
+    def handle_file(container_path, container_extract):
+        name = container_path.lstrip("./")
+        if pattern_compiled is not None and pattern_compiled.search(name):
+            logger.info("Skipping %s" % name)
+        else:
+            container_extract(container_path, path=dest + "/")
+            logger.info("Extracted %s" % name)
+
+    logger.info("Extracting archive")
+
+    if artifact_s3_url.endswith(".zip"):
+        logger.info("Found zip file")
+        with zipfile.ZipFile(source, "r") as zip:
+            for name in zip.namelist():
+                handle_file(name, zip.extract)
+
+    elif artifact_s3_url.endswith(".tgz"):
+        logger.info("Found tgz file")
+        with tarfile.open(source, "r:gz") as tar:
+            for tar_resource in tar:
+                if tar_resource.isfile():
+                    handle_file(tar_resource.name, tar.extract)
+
+    else:
+        raise Exception(f"Unsupported extension: {artifact_s3_url}")
+
+
 def deploy(artifact_s3_url, target_s3_url, exclude_pattern):
     """
     Deploys items from the S3 artifact, which should point to a .tgz
-    file, to the target S3 bucket.
+    or .zip file, to the target S3 bucket.
 
     Returns a list of DeployItem that were uploaded.
     """
@@ -126,20 +159,7 @@ def deploy(artifact_s3_url, target_s3_url, exclude_pattern):
 
     temp_dir = tempfile.mkdtemp()
 
-    pattern_compiled = (
-        re.compile(exclude_pattern) if exclude_pattern is not None else None
-    )
-
-    logger.info("Extracting archive")
-    with tarfile.open(temp_file.name, "r:gz") as tar:
-        for tar_resource in tar:
-            if tar_resource.isfile():
-                name = tar_resource.name.lstrip("./")
-                if pattern_compiled is not None and pattern_compiled.search(name):
-                    logger.info("Skipping %s" % name)
-                else:
-                    tar.extract(tar_resource.name, path=temp_dir + "/")
-                    logger.info("Extracted %s" % name)
+    extract(artifact_s3_url, temp_file.name, temp_dir, exclude_pattern)
 
     s3_upload_bucket, s3_upload_key_base = parse_s3_url(target_s3_url)
 

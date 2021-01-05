@@ -73,7 +73,7 @@ test("WebappDeploy with source", () => {
 
   new WebappDeploy(stack, "WebappDeploy", {
     distribution,
-    source: Source.asset(path.join(__dirname, "../example-asset")),
+    source: Source.asset(path.join(__dirname, "../example-assets/source")),
     webBucket,
   })
 
