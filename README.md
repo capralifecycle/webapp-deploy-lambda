@@ -34,7 +34,7 @@ This project approaches it differently by deleting old files.
 A user that still uses an application deployed five days ago should not
 be disrupted. To keep this promise we keep the newest deployment that
 happened more than five days ago, and delete files from older ones that no
-longer have any refrence to them.
+longer have any reference to them.
 
 ## Triggering a deployment
 
