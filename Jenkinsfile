@@ -14,7 +14,7 @@ buildConfig([
       checkout scm
     }
 
-    def img = docker.image('circleci/python:3.7')
+    def img = docker.image('circleci/python:3.8')
     img.pull() // Ensure latest version.
     img.inside {
       stage('Lint and test python code') {
