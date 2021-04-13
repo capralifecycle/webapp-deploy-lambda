@@ -134,6 +134,7 @@ export class WebappDeploy extends cdk.Construct {
             resources: [this.deployFn.functionArn],
           }),
         ]),
+        installLatestAwsSdk: false,
       })
     }
   }
