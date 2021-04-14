@@ -267,16 +267,16 @@ Object {
       "Description": "S3 key for asset version \\"48be1f8516ade54ba72e36a3f42565c479b1daa69b4b3872a6c5215ab64f1ef5\\"",
       "Type": "String",
     },
-    "AssetParameters4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956ArtifactHashD15A2D11": Object {
-      "Description": "Artifact hash for asset \\"4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956\\"",
+    "AssetParametersa5a55f40f05c1031f30cc935c76b58b0b7dbc81e70845edf4ef615d6580ae04dArtifactHashBC261AD6": Object {
+      "Description": "Artifact hash for asset \\"a5a55f40f05c1031f30cc935c76b58b0b7dbc81e70845edf4ef615d6580ae04d\\"",
       "Type": "String",
     },
-    "AssetParameters4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956S3Bucket72B03BC9": Object {
-      "Description": "S3 bucket for asset \\"4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956\\"",
+    "AssetParametersa5a55f40f05c1031f30cc935c76b58b0b7dbc81e70845edf4ef615d6580ae04dS3BucketDDD15B67": Object {
+      "Description": "S3 bucket for asset \\"a5a55f40f05c1031f30cc935c76b58b0b7dbc81e70845edf4ef615d6580ae04d\\"",
       "Type": "String",
     },
-    "AssetParameters4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956S3VersionKey520B7554": Object {
-      "Description": "S3 key for asset version \\"4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956\\"",
+    "AssetParametersa5a55f40f05c1031f30cc935c76b58b0b7dbc81e70845edf4ef615d6580ae04dS3VersionKey76284988": Object {
+      "Description": "S3 key for asset version \\"a5a55f40f05c1031f30cc935c76b58b0b7dbc81e70845edf4ef615d6580ae04d\\"",
       "Type": "String",
     },
     "AssetParametersb4364cdff91f3392b915bd217a17749ed1895be082393346acd6c6c26d8550c6ArtifactHashB910DE6A": Object {
@@ -300,7 +300,7 @@ Object {
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParameters4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956S3Bucket72B03BC9",
+            "Ref": "AssetParametersa5a55f40f05c1031f30cc935c76b58b0b7dbc81e70845edf4ef615d6580ae04dS3BucketDDD15B67",
           },
           "S3Key": Object {
             "Fn::Join": Array [
@@ -313,7 +313,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParameters4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956S3VersionKey520B7554",
+                          "Ref": "AssetParametersa5a55f40f05c1031f30cc935c76b58b0b7dbc81e70845edf4ef615d6580ae04dS3VersionKey76284988",
                         },
                       ],
                     },
@@ -326,7 +326,7 @@ Object {
                       "Fn::Split": Array [
                         "||",
                         Object {
-                          "Ref": "AssetParameters4a3609ad912843e581892f37ae9d6fb0fa1648b547693aaa562b0119452b8956S3VersionKey520B7554",
+                          "Ref": "AssetParametersa5a55f40f05c1031f30cc935c76b58b0b7dbc81e70845edf4ef615d6580ae04dS3VersionKey76284988",
                         },
                       ],
                     },
@@ -451,55 +451,47 @@ Object {
       ],
       "Properties": Object {
         "Create": Object {
-          "action": "invoke",
-          "parameters": Object {
-            "FunctionName": Object {
-              "Ref": "WebappDeploy4D661524",
-            },
-            "Payload": Object {
-              "Fn::Join": Array [
-                "",
-                Array [
-                  "{\\"artifactS3Url\\":\\"s3://",
+          "Fn::Join": Array [
+            "",
+            Array [
+              "{\\"service\\":\\"Lambda\\",\\"action\\":\\"invoke\\",\\"physicalResourceId\\":{\\"id\\":\\"webapp-deploy\\"},\\"parameters\\":{\\"FunctionName\\":\\"",
+              Object {
+                "Ref": "WebappDeploy4D661524",
+              },
+              "\\",\\"Payload\\":\\"{\\\\\\"artifactS3Url\\\\\\":\\\\\\"s3://",
+              Object {
+                "Ref": "AssetParameters48be1f8516ade54ba72e36a3f42565c479b1daa69b4b3872a6c5215ab64f1ef5S3Bucket3F1C919D",
+              },
+              "/",
+              Object {
+                "Fn::Select": Array [
+                  0,
                   Object {
-                    "Ref": "AssetParameters48be1f8516ade54ba72e36a3f42565c479b1daa69b4b3872a6c5215ab64f1ef5S3Bucket3F1C919D",
-                  },
-                  "/",
-                  Object {
-                    "Fn::Select": Array [
-                      0,
+                    "Fn::Split": Array [
+                      "||",
                       Object {
-                        "Fn::Split": Array [
-                          "||",
-                          Object {
-                            "Ref": "AssetParameters48be1f8516ade54ba72e36a3f42565c479b1daa69b4b3872a6c5215ab64f1ef5S3VersionKey59C86469",
-                          },
-                        ],
+                        "Ref": "AssetParameters48be1f8516ade54ba72e36a3f42565c479b1daa69b4b3872a6c5215ab64f1ef5S3VersionKey59C86469",
                       },
                     ],
                   },
-                  Object {
-                    "Fn::Select": Array [
-                      1,
-                      Object {
-                        "Fn::Split": Array [
-                          "||",
-                          Object {
-                            "Ref": "AssetParameters48be1f8516ade54ba72e36a3f42565c479b1daa69b4b3872a6c5215ab64f1ef5S3VersionKey59C86469",
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                  "\\"}",
                 ],
-              ],
-            },
-          },
-          "physicalResourceId": Object {
-            "id": "webapp-deploy",
-          },
-          "service": "Lambda",
+              },
+              Object {
+                "Fn::Select": Array [
+                  1,
+                  Object {
+                    "Fn::Split": Array [
+                      "||",
+                      Object {
+                        "Ref": "AssetParameters48be1f8516ade54ba72e36a3f42565c479b1daa69b4b3872a6c5215ab64f1ef5S3VersionKey59C86469",
+                      },
+                    ],
+                  },
+                ],
+              },
+              "\\\\\\"}\\"}}",
+            ],
+          ],
         },
         "InstallLatestAwsSdk": false,
         "ServiceToken": Object {
@@ -509,55 +501,47 @@ Object {
           ],
         },
         "Update": Object {
-          "action": "invoke",
-          "parameters": Object {
-            "FunctionName": Object {
-              "Ref": "WebappDeploy4D661524",
-            },
-            "Payload": Object {
-              "Fn::Join": Array [
-                "",
-                Array [
-                  "{\\"artifactS3Url\\":\\"s3://",
+          "Fn::Join": Array [
+            "",
+            Array [
+              "{\\"service\\":\\"Lambda\\",\\"action\\":\\"invoke\\",\\"physicalResourceId\\":{\\"id\\":\\"webapp-deploy\\"},\\"parameters\\":{\\"FunctionName\\":\\"",
+              Object {
+                "Ref": "WebappDeploy4D661524",
+              },
+              "\\",\\"Payload\\":\\"{\\\\\\"artifactS3Url\\\\\\":\\\\\\"s3://",
+              Object {
+                "Ref": "AssetParameters48be1f8516ade54ba72e36a3f42565c479b1daa69b4b3872a6c5215ab64f1ef5S3Bucket3F1C919D",
+              },
+              "/",
+              Object {
+                "Fn::Select": Array [
+                  0,
                   Object {
-                    "Ref": "AssetParameters48be1f8516ade54ba72e36a3f42565c479b1daa69b4b3872a6c5215ab64f1ef5S3Bucket3F1C919D",
-                  },
-                  "/",
-                  Object {
-                    "Fn::Select": Array [
-                      0,
+                    "Fn::Split": Array [
+                      "||",
                       Object {
-                        "Fn::Split": Array [
-                          "||",
-                          Object {
-                            "Ref": "AssetParameters48be1f8516ade54ba72e36a3f42565c479b1daa69b4b3872a6c5215ab64f1ef5S3VersionKey59C86469",
-                          },
-                        ],
+                        "Ref": "AssetParameters48be1f8516ade54ba72e36a3f42565c479b1daa69b4b3872a6c5215ab64f1ef5S3VersionKey59C86469",
                       },
                     ],
                   },
-                  Object {
-                    "Fn::Select": Array [
-                      1,
-                      Object {
-                        "Fn::Split": Array [
-                          "||",
-                          Object {
-                            "Ref": "AssetParameters48be1f8516ade54ba72e36a3f42565c479b1daa69b4b3872a6c5215ab64f1ef5S3VersionKey59C86469",
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                  "\\"}",
                 ],
-              ],
-            },
-          },
-          "physicalResourceId": Object {
-            "id": "webapp-deploy",
-          },
-          "service": "Lambda",
+              },
+              Object {
+                "Fn::Select": Array [
+                  1,
+                  Object {
+                    "Fn::Split": Array [
+                      "||",
+                      Object {
+                        "Ref": "AssetParameters48be1f8516ade54ba72e36a3f42565c479b1daa69b4b3872a6c5215ab64f1ef5S3VersionKey59C86469",
+                      },
+                    ],
+                  },
+                ],
+              },
+              "\\\\\\"}\\"}}",
+            ],
+          ],
         },
       },
       "Type": "Custom::AWS",
