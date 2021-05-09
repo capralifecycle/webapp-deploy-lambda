@@ -146,6 +146,19 @@ def extract(artifact_s3_url, source, dest, exclude_pattern):
         raise Exception(f"Unsupported extension: {artifact_s3_url}")
 
 
+def construct_all_files(temp_dir, s3_upload_key_base):
+    all_files = []
+    for root, dirs, files in os.walk(temp_dir):
+        for filename in files:
+            local_path = os.path.join(root, filename)
+            relpath = os.path.relpath(local_path, temp_dir)
+            s3_key = os.path.join(s3_upload_key_base, relpath)
+
+            all_files.append([relpath, local_path, s3_key])
+
+    return all_files
+
+
 def deploy(artifact_s3_url, target_s3_url, exclude_pattern):
     """
     Deploys items from the S3 artifact, which should point to a .tgz
@@ -163,13 +176,7 @@ def deploy(artifact_s3_url, target_s3_url, exclude_pattern):
 
     s3_upload_bucket, s3_upload_key_base = parse_s3_url(target_s3_url)
 
-    all_files = []
-    for root, dirs, files in os.walk(temp_dir):
-        for filename in files:
-            local_path = os.path.join(root, filename)
-            s3_key = os.path.join(s3_upload_key_base, filename)
-
-            all_files.append([filename, local_path, s3_key])
+    all_files = construct_all_files(temp_dir, s3_upload_key_base)
 
     deploy_time = int(time.time())
 
