@@ -1,7 +1,7 @@
-import * as iam from "@aws-cdk/aws-iam"
-import * as s3 from "@aws-cdk/aws-s3"
-import * as s3Assets from "@aws-cdk/aws-s3-assets"
-import * as cdk from "@aws-cdk/core"
+import * as constructs from "constructs"
+import * as iam from "aws-cdk-lib/aws-iam"
+import * as s3 from "aws-cdk-lib/aws-s3"
+import * as s3Assets from "aws-cdk-lib/aws-s3-assets"
 
 // This is mostly based on aws-s3-deployment from aws-cdk.
 
@@ -36,7 +36,7 @@ export interface ISource {
   /**
    * Binds the source to a bucket deployment.
    */
-  bind(scope: cdk.Construct, context?: SourceContext): SourceConfig
+  bind(scope: constructs.Construct, context?: SourceContext): SourceConfig
 }
 
 /**
@@ -57,7 +57,7 @@ export class Source {
    */
   public static bucket(bucket: s3.IBucket, zipObjectKey: string): ISource {
     return {
-      bind: (_: cdk.Construct, context?: SourceContext) => {
+      bind: (_: constructs.Construct, context?: SourceContext) => {
         if (!context) {
           throw new Error("To use a Source.bucket(), context must be provided")
         }
@@ -77,7 +77,7 @@ export class Source {
    */
   public static asset(path: string, options?: s3Assets.AssetOptions): ISource {
     return {
-      bind(scope: cdk.Construct, context?: SourceContext): SourceConfig {
+      bind(scope: constructs.Construct, context?: SourceContext): SourceConfig {
         if (!context) {
           throw new Error("To use a Source.asset(), context must be provided")
         }
