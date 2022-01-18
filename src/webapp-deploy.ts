@@ -1,13 +1,14 @@
-import * as cloudfront from "@aws-cdk/aws-cloudfront"
-import * as iam from "@aws-cdk/aws-iam"
-import * as lambda from "@aws-cdk/aws-lambda"
-import * as s3 from "@aws-cdk/aws-s3"
-import * as cdk from "@aws-cdk/core"
+import * as constructs from "constructs"
+import * as cloudfront from "aws-cdk-lib/aws-cloudfront"
+import * as iam from "aws-cdk-lib/aws-iam"
+import * as lambda from "aws-cdk-lib/aws-lambda"
+import * as s3 from "aws-cdk-lib/aws-s3"
+import * as cdk from "aws-cdk-lib"
 import {
   AwsCustomResource,
   AwsCustomResourcePolicy,
   PhysicalResourceId,
-} from "@aws-cdk/custom-resources"
+} from "aws-cdk-lib/custom-resources"
 import * as path from "path"
 import { ISource } from "./source"
 
@@ -66,10 +67,14 @@ export interface WebappDeployProps {
  * Resource to deploy a webapp from a build artifact into an existing
  * S3 Bucket and CloudFront Distribution.
  */
-export class WebappDeploy extends cdk.Construct {
+export class WebappDeploy extends constructs.Construct {
   readonly deployFn: lambda.Function
 
-  constructor(scope: cdk.Construct, id: string, props: WebappDeployProps) {
+  constructor(
+    scope: constructs.Construct,
+    id: string,
+    props: WebappDeployProps,
+  ) {
     super(scope, id)
 
     const environment: Record<string, string> = {
