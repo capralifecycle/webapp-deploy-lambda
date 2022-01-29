@@ -33,7 +33,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.135.0",
+    "@aws-cdk/assert": "2.10.0",
     "@aws-cdk/aws-cloudfront": "1.135.0",
     "@aws-cdk/aws-iam": "1.135.0",
     "@aws-cdk/aws-lambda": "1.135.0",
