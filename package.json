@@ -37,7 +37,7 @@
     "@commitlint/cli": "15.0.0",
     "@commitlint/config-conventional": "15.0.0",
     "@types/jest": "27.5.1",
-    "@types/node": "16.11.33",
+    "@types/node": "16.11.36",
     "@typescript-eslint/eslint-plugin": "5.23.0",
     "@typescript-eslint/parser": "5.23.0",
     "aws-cdk-lib": "2.16.0",
