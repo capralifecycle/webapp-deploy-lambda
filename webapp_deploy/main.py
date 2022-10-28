@@ -7,6 +7,7 @@ import tarfile
 import tempfile
 import time
 import zipfile
+import cfnresponse
 from contextlib import closing
 
 from botocore.exceptions import ClientError
@@ -255,7 +256,22 @@ def process(s3_artifact):
 
 def handler(event, context):
     logger.info("Handler was called - starting processing")
-    process(event["artifactS3Url"])
+    response = {
+        "event": event,
+        "context": context,
+        "responseStatus": cfnresponse.SUCCESS,
+    }
+    try:
+        process(event["artifactS3Url"])
+    except:
+        logger.exception("An unexpected error occurred - marking the deployment as a failure")
+        response = {
+            **response,
+            "responseStatus": cfnresponse.FAILED,
+        }
+    cfnresponse.send(**response)
+
+
 
 
 if __name__ == "__main__":
