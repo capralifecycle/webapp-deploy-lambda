@@ -7,10 +7,9 @@ import tarfile
 import tempfile
 import time
 import zipfile
-import cfnresponse
-from contextlib import closing
-
 from botocore.exceptions import ClientError
+from contextlib import closing
+from webapp_deploy.cfnresponse import send, SUCCESS, FAILED
 
 from webapp_deploy.aws import cf_client, parse_s3_url, s3_client
 from webapp_deploy.config import (
@@ -259,7 +258,7 @@ def handler(event, context):
     response = {
         "event": event,
         "context": context,
-        "responseStatus": cfnresponse.SUCCESS,
+        "responseStatus": SUCCESS,
     }
     try:
         process(event["artifactS3Url"])
@@ -267,9 +266,10 @@ def handler(event, context):
         logger.exception("An unexpected error occurred - marking the deployment as a failure")
         response = {
             **response,
-            "responseStatus": cfnresponse.FAILED,
+            "responseStatus": FAILED,
         }
-    cfnresponse.send(**response)
+    logger.info(response)
+    send(**response)
 
 
 
