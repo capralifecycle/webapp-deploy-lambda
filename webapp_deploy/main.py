@@ -1,3 +1,4 @@
+import json
 import mimetypes
 import os
 import re
@@ -7,9 +8,9 @@ import tarfile
 import tempfile
 import time
 import zipfile
-from contextlib import closing
-
 from botocore.exceptions import ClientError
+from contextlib import closing
+from webapp_deploy.cfnresponse import send, SUCCESS, FAILED
 
 from webapp_deploy.aws import cf_client, parse_s3_url, s3_client
 from webapp_deploy.config import (
@@ -254,8 +255,37 @@ def process(s3_artifact):
 
 
 def handler(event, context):
-    logger.info("Handler was called - starting processing")
-    process(event["artifactS3Url"])
+    response = {
+        "event": event,
+        "context": context,
+        "responseStatus": SUCCESS,
+    }
+
+    logger.info("Cloud formation event triggered handler: %s" % json.dumps(event))
+    logger.info("Starting processing")
+    if event["RequestType"] in ("Update", "Create"):
+        try:
+            process(event["ResourceProperties"]["artifactS3Url"])
+        except Exception:
+            logger.exception(
+                "An unexpected error occurred - marking the deployment as a failure"
+            )
+            response = {
+                **response,
+                "responseStatus": FAILED,
+            }
+        send(**response)
+    else:
+        logger.info(
+            "Event type is %s. Nothing is done for this event type."
+            % event["RequestType"]
+        )
+        try:
+            send(**response)
+        except Exception:
+            logger.exception(
+                "Could not send response for event type %s" % event["RequestType"]
+            )
 
 
 if __name__ == "__main__":

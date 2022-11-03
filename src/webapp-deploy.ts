@@ -4,13 +4,10 @@ import * as iam from "aws-cdk-lib/aws-iam"
 import * as lambda from "aws-cdk-lib/aws-lambda"
 import * as s3 from "aws-cdk-lib/aws-s3"
 import * as cdk from "aws-cdk-lib"
-import {
-  AwsCustomResource,
-  AwsCustomResourcePolicy,
-  PhysicalResourceId,
-} from "aws-cdk-lib/custom-resources"
+import { CustomResource, RemovalPolicy } from "aws-cdk-lib"
 import * as path from "path"
 import { ISource } from "./source"
+import { CfnResource } from "aws-cdk-lib/core/lib/cfn-resource"
 
 export interface WebappDeployProps {
   /**
@@ -99,7 +96,7 @@ export class WebappDeploy extends constructs.Construct {
       functionName: props.functionName ?? cdk.PhysicalName.GENERATE_IF_NEEDED,
       handler: "webapp_deploy.main.handler",
       reservedConcurrentExecutions: 1,
-      runtime: lambda.Runtime.PYTHON_3_8,
+      runtime: lambda.Runtime.PYTHON_3_9,
       timeout: cdk.Duration.minutes(2),
       initialPolicy: [
         new iam.PolicyStatement({
@@ -121,26 +118,17 @@ export class WebappDeploy extends constructs.Construct {
         handlerRole: this.deployFn.role!,
       })
 
-      new AwsCustomResource(this, "CustomResource", {
-        onUpdate: {
-          service: "Lambda",
-          action: "invoke",
-          physicalResourceId: PhysicalResourceId.of("webapp-deploy"),
-          parameters: {
-            FunctionName: this.deployFn.functionName,
-            Payload: cdk.Stack.of(scope).toJsonString({
-              artifactS3Url: `s3://${source.bucket.bucketName}/${source.zipObjectKey}`,
-            }),
-          },
+      const customResourceLambda = new CustomResource(this, "CustomResource", {
+        serviceToken: this.deployFn.functionArn,
+        properties: {
+          artifactS3Url: `s3://${source.bucket.bucketName}/${source.zipObjectKey}`,
         },
-        policy: AwsCustomResourcePolicy.fromStatements([
-          new iam.PolicyStatement({
-            actions: ["lambda:InvokeFunction"],
-            resources: [this.deployFn.functionArn],
-          }),
-        ]),
-        installLatestAwsSdk: false,
+        removalPolicy: RemovalPolicy.RETAIN,
       })
+
+      ;(
+        customResourceLambda.node.defaultChild as CfnResource
+      ).addPropertyOverride("UpdateReplacePolicy", "Retain")
     }
   }
 }
