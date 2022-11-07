@@ -30,7 +30,7 @@ Object {
               "Resource": Array [
                 Object {
                   "Fn::GetAtt": Array [
-                    "WebappDeploy4D661524",
+                    "WebappDeployWebappDeployResource568A3E18",
                     "Arn",
                   ],
                 },
@@ -40,7 +40,7 @@ Object {
                     Array [
                       Object {
                         "Fn::GetAtt": Array [
-                          "WebappDeploy4D661524",
+                          "WebappDeployWebappDeployResource568A3E18",
                           "Arn",
                         ],
                       },
@@ -62,38 +62,40 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
-    "WebappDeploy4D661524": Object {
+    "WebappDeployProviderframeworkonEvent095845EB": Object {
       "DependsOn": Array [
-        "WebappDeployServiceRoleDefaultPolicyE446530F",
-        "WebappDeployServiceRole78F79841",
+        "WebappDeployProviderframeworkonEventServiceRoleDefaultPolicy007A69B8",
+        "WebappDeployProviderframeworkonEventServiceRole6401B28E",
       ],
       "Properties": Object {
         "Code": Object {
           "S3Bucket": "cdk-hnb659fds-assets-123456789123-eu-west-1",
-          "S3Key": "92a9729ddc0d8f311e1b66f1d5811ff2d5f57ace5368c906a0929813cf79e86f.zip",
+          "S3Key": "e7c95e1a12d903d913ebdd526c735f1ac58b2024882a5562110221fe685ebe85.zip",
         },
+        "Description": "AWS CDK resource provider framework - onEvent (Stack/WebappDeploy/Provider)",
         "Environment": Object {
           "Variables": Object {
-            "CF_DISTRIBUTION_ID": "EKJ2IPY1KTEAR1",
-            "DEPLOY_LOG_BUCKET_URL": "s3://web-bucket/deployments.log",
-            "EXPIRE_SECONDS": "432000",
-            "TARGET_BUCKET_URL": "s3://web-bucket/web",
+            "USER_ON_EVENT_FUNCTION_ARN": Object {
+              "Fn::GetAtt": Array [
+                "WebappDeployWebappDeployResource568A3E18",
+                "Arn",
+              ],
+            },
           },
         },
-        "Handler": "webapp_deploy.main.handler",
-        "ReservedConcurrentExecutions": 1,
+        "Handler": "framework.onEvent",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "WebappDeployServiceRole78F79841",
+            "WebappDeployProviderframeworkonEventServiceRole6401B28E",
             "Arn",
           ],
         },
-        "Runtime": "python3.8",
-        "Timeout": 120,
+        "Runtime": "nodejs14.x",
+        "Timeout": 900,
       },
       "Type": "AWS::Lambda::Function",
     },
-    "WebappDeployServiceRole78F79841": Object {
+    "WebappDeployProviderframeworkonEventServiceRole6401B28E": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -124,7 +126,111 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "WebappDeployServiceRoleDefaultPolicyE446530F": Object {
+    "WebappDeployProviderframeworkonEventServiceRoleDefaultPolicy007A69B8": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "WebappDeployWebappDeployResource568A3E18",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "WebappDeployWebappDeployResource568A3E18",
+                          "Arn",
+                        ],
+                      },
+                      ":*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "WebappDeployProviderframeworkonEventServiceRoleDefaultPolicy007A69B8",
+        "Roles": Array [
+          Object {
+            "Ref": "WebappDeployProviderframeworkonEventServiceRole6401B28E",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "WebappDeployWebappDeployResource568A3E18": Object {
+      "DependsOn": Array [
+        "WebappDeployWebappDeployResourceServiceRoleDefaultPolicy5CB528F1",
+        "WebappDeployWebappDeployResourceServiceRole6D7BB70F",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789123-eu-west-1",
+          "S3Key": "04d04d3e5f2133139b32c63f4c1a89b8f505d7fe7917cccadbda1c02098f0f45.zip",
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "CF_DISTRIBUTION_ID": "EKJ2IPY1KTEAR1",
+            "DEPLOY_LOG_BUCKET_URL": "s3://web-bucket/deployments.log",
+            "EXPIRE_SECONDS": "432000",
+            "TARGET_BUCKET_URL": "s3://web-bucket/web",
+          },
+        },
+        "Handler": "webapp_deploy.main.handler",
+        "ReservedConcurrentExecutions": 1,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "WebappDeployWebappDeployResourceServiceRole6D7BB70F",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.8",
+        "Timeout": 120,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "WebappDeployWebappDeployResourceServiceRole6D7BB70F": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "WebappDeployWebappDeployResourceServiceRoleDefaultPolicy5CB528F1": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -211,10 +317,10 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "WebappDeployServiceRoleDefaultPolicyE446530F",
+        "PolicyName": "WebappDeployWebappDeployResourceServiceRoleDefaultPolicy5CB528F1",
         "Roles": Array [
           Object {
-            "Ref": "WebappDeployServiceRole78F79841",
+            "Ref": "WebappDeployWebappDeployResourceServiceRole6D7BB70F",
           },
         ],
       },
@@ -227,28 +333,54 @@ Object {
 exports[`WebappDeploy with source 1`] = `
 Object {
   "Resources": Object {
-    "AWS679f53fac002430cb0da5b7982bd22872D164C4C": Object {
+    "WebappDeployCustomResourceCA418804": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "WebappDeployProviderframeworkonEvent095845EB",
+            "Arn",
+          ],
+        },
+        "artifactS3Url": "s3://cdk-hnb659fds-assets-123456789123-eu-west-1/48be1f8516ade54ba72e36a3f42565c479b1daa69b4b3872a6c5215ab64f1ef5.zip",
+      },
+      "Type": "AWS::CloudFormation::CustomResource",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "WebappDeployProviderframeworkonEvent095845EB": Object {
       "DependsOn": Array [
-        "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2",
+        "WebappDeployProviderframeworkonEventServiceRoleDefaultPolicy007A69B8",
+        "WebappDeployProviderframeworkonEventServiceRole6401B28E",
       ],
       "Properties": Object {
         "Code": Object {
           "S3Bucket": "cdk-hnb659fds-assets-123456789123-eu-west-1",
-          "S3Key": "6dbd112fe448437b3438da4382c72fccbb7d2ee1543db222620d7447fffebc50.zip",
+          "S3Key": "e7c95e1a12d903d913ebdd526c735f1ac58b2024882a5562110221fe685ebe85.zip",
         },
-        "Handler": "index.handler",
+        "Description": "AWS CDK resource provider framework - onEvent (Stack/WebappDeploy/Provider)",
+        "Environment": Object {
+          "Variables": Object {
+            "USER_ON_EVENT_FUNCTION_ARN": Object {
+              "Fn::GetAtt": Array [
+                "WebappDeployWebappDeployResource568A3E18",
+                "Arn",
+              ],
+            },
+          },
+        },
+        "Handler": "framework.onEvent",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2",
+            "WebappDeployProviderframeworkonEventServiceRole6401B28E",
             "Arn",
           ],
         },
         "Runtime": "nodejs14.x",
-        "Timeout": 120,
+        "Timeout": 900,
       },
       "Type": "AWS::Lambda::Function",
     },
-    "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2": Object {
+    "WebappDeployProviderframeworkonEventServiceRole6401B28E": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -279,15 +411,57 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "WebappDeploy4D661524": Object {
+    "WebappDeployProviderframeworkonEventServiceRoleDefaultPolicy007A69B8": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "WebappDeployWebappDeployResource568A3E18",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "WebappDeployWebappDeployResource568A3E18",
+                          "Arn",
+                        ],
+                      },
+                      ":*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "WebappDeployProviderframeworkonEventServiceRoleDefaultPolicy007A69B8",
+        "Roles": Array [
+          Object {
+            "Ref": "WebappDeployProviderframeworkonEventServiceRole6401B28E",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "WebappDeployWebappDeployResource568A3E18": Object {
       "DependsOn": Array [
-        "WebappDeployServiceRoleDefaultPolicyE446530F",
-        "WebappDeployServiceRole78F79841",
+        "WebappDeployWebappDeployResourceServiceRoleDefaultPolicy5CB528F1",
+        "WebappDeployWebappDeployResourceServiceRole6D7BB70F",
       ],
       "Properties": Object {
         "Code": Object {
           "S3Bucket": "cdk-hnb659fds-assets-123456789123-eu-west-1",
-          "S3Key": "92a9729ddc0d8f311e1b66f1d5811ff2d5f57ace5368c906a0929813cf79e86f.zip",
+          "S3Key": "04d04d3e5f2133139b32c63f4c1a89b8f505d7fe7917cccadbda1c02098f0f45.zip",
         },
         "Environment": Object {
           "Variables": Object {
@@ -301,7 +475,7 @@ Object {
         "ReservedConcurrentExecutions": 1,
         "Role": Object {
           "Fn::GetAtt": Array [
-            "WebappDeployServiceRole78F79841",
+            "WebappDeployWebappDeployResourceServiceRole6D7BB70F",
             "Arn",
           ],
         },
@@ -310,74 +484,7 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "WebappDeployCustomResourceCF959726": Object {
-      "DeletionPolicy": "Delete",
-      "DependsOn": Array [
-        "WebappDeployCustomResourceCustomResourcePolicyB85F7B61",
-      ],
-      "Properties": Object {
-        "Create": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "{\\"service\\":\\"Lambda\\",\\"action\\":\\"invoke\\",\\"physicalResourceId\\":{\\"id\\":\\"webapp-deploy\\"},\\"parameters\\":{\\"FunctionName\\":\\"",
-              Object {
-                "Ref": "WebappDeploy4D661524",
-              },
-              "\\",\\"Payload\\":\\"{\\\\\\"artifactS3Url\\\\\\":\\\\\\"s3://cdk-hnb659fds-assets-123456789123-eu-west-1/48be1f8516ade54ba72e36a3f42565c479b1daa69b4b3872a6c5215ab64f1ef5.zip\\\\\\"}\\"}}",
-            ],
-          ],
-        },
-        "InstallLatestAwsSdk": false,
-        "ServiceToken": Object {
-          "Fn::GetAtt": Array [
-            "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
-            "Arn",
-          ],
-        },
-        "Update": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "{\\"service\\":\\"Lambda\\",\\"action\\":\\"invoke\\",\\"physicalResourceId\\":{\\"id\\":\\"webapp-deploy\\"},\\"parameters\\":{\\"FunctionName\\":\\"",
-              Object {
-                "Ref": "WebappDeploy4D661524",
-              },
-              "\\",\\"Payload\\":\\"{\\\\\\"artifactS3Url\\\\\\":\\\\\\"s3://cdk-hnb659fds-assets-123456789123-eu-west-1/48be1f8516ade54ba72e36a3f42565c479b1daa69b4b3872a6c5215ab64f1ef5.zip\\\\\\"}\\"}}",
-            ],
-          ],
-        },
-      },
-      "Type": "Custom::AWS",
-      "UpdateReplacePolicy": "Delete",
-    },
-    "WebappDeployCustomResourceCustomResourcePolicyB85F7B61": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "lambda:InvokeFunction",
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "WebappDeploy4D661524",
-                  "Arn",
-                ],
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "WebappDeployCustomResourceCustomResourcePolicyB85F7B61",
-        "Roles": Array [
-          Object {
-            "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "WebappDeployServiceRole78F79841": Object {
+    "WebappDeployWebappDeployResourceServiceRole6D7BB70F": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -408,7 +515,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "WebappDeployServiceRoleDefaultPolicyE446530F": Object {
+    "WebappDeployWebappDeployResourceServiceRoleDefaultPolicy5CB528F1": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -495,10 +602,10 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "WebappDeployServiceRoleDefaultPolicyE446530F",
+        "PolicyName": "WebappDeployWebappDeployResourceServiceRoleDefaultPolicy5CB528F1",
         "Roles": Array [
           Object {
-            "Ref": "WebappDeployServiceRole78F79841",
+            "Ref": "WebappDeployWebappDeployResourceServiceRole6D7BB70F",
           },
         ],
       },

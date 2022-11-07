@@ -4,11 +4,7 @@ import * as iam from "aws-cdk-lib/aws-iam"
 import * as lambda from "aws-cdk-lib/aws-lambda"
 import * as s3 from "aws-cdk-lib/aws-s3"
 import * as cdk from "aws-cdk-lib"
-import {
-  AwsCustomResource,
-  AwsCustomResourcePolicy,
-  PhysicalResourceId,
-} from "aws-cdk-lib/custom-resources"
+import { Provider } from "aws-cdk-lib/custom-resources"
 import * as path from "path"
 import { ISource } from "./source"
 
@@ -93,7 +89,7 @@ export class WebappDeploy extends constructs.Construct {
       environment.EXCLUDE_PATTERN = props.excludePattern
     }
 
-    this.deployFn = new lambda.Function(this, "Resource", {
+    this.deployFn = new lambda.Function(this, "WebappDeployResource", {
       code: lambda.Code.fromAsset(path.join(__dirname, "../dist")),
       environment,
       functionName: props.functionName ?? cdk.PhysicalName.GENERATE_IF_NEEDED,
@@ -110,6 +106,10 @@ export class WebappDeploy extends constructs.Construct {
       ],
     })
 
+    const provider = new Provider(this, "Provider", {
+      onEventHandler: this.deployFn,
+    })
+
     props.webBucket.grantReadWrite(this.deployFn)
 
     if (props.buildsBucket) {
@@ -120,26 +120,11 @@ export class WebappDeploy extends constructs.Construct {
       const source = props.source.bind(this, {
         handlerRole: this.deployFn.role!,
       })
-
-      new AwsCustomResource(this, "CustomResource", {
-        onUpdate: {
-          service: "Lambda",
-          action: "invoke",
-          physicalResourceId: PhysicalResourceId.of("webapp-deploy"),
-          parameters: {
-            FunctionName: this.deployFn.functionName,
-            Payload: cdk.Stack.of(scope).toJsonString({
-              artifactS3Url: `s3://${source.bucket.bucketName}/${source.zipObjectKey}`,
-            }),
-          },
+      new cdk.CustomResource(this, "CustomResource", {
+        serviceToken: provider.serviceToken,
+        properties: {
+          artifactS3Url: `s3://${source.bucket.bucketName}/${source.zipObjectKey}`,
         },
-        policy: AwsCustomResourcePolicy.fromStatements([
-          new iam.PolicyStatement({
-            actions: ["lambda:InvokeFunction"],
-            resources: [this.deployFn.functionArn],
-          }),
-        ]),
-        installLatestAwsSdk: false,
       })
     }
   }
