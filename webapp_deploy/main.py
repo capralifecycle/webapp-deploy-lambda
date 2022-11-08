@@ -1,3 +1,4 @@
+import json
 import mimetypes
 import os
 import re
@@ -254,8 +255,15 @@ def process(s3_artifact):
 
 
 def handler(event, context):
+    logger.info("Triggered by event: %s" % json.dumps(event))
     logger.info("Handler was called - starting processing")
-    process(event["artifactS3Url"])
+    request_type = event["RequestType"]
+    if request_type in ["Create", "Update"]:
+        process(event["ResourceProperties"]["artifactS3Url"])
+    elif request_type == "Delete":
+        logger.info("Request type is %s -- not doing anything" % request_type)
+    else:
+        raise Exception("Invalid request type: %s" % request_type)
 
 
 if __name__ == "__main__":
