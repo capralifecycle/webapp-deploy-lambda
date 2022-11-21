@@ -33,14 +33,14 @@
     "access": "public"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "2.45.0",
+    "@aws-cdk/assert": "2.51.0",
     "@commitlint/cli": "17.2.0",
     "@commitlint/config-conventional": "17.2.0",
     "@types/jest": "27.5.2",
     "@types/node": "16.18.3",
     "@typescript-eslint/eslint-plugin": "5.43.0",
     "@typescript-eslint/parser": "5.43.0",
-    "aws-cdk-lib": "2.45.0",
+    "aws-cdk-lib": "2.51.0",
     "constructs": "10.1.162",
     "eslint": "8.27.0",
     "eslint-config-prettier": "8.5.0",
