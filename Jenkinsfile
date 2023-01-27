@@ -27,7 +27,7 @@ buildConfig([
       }
     }
 
-    insideToolImage("node:18") {
+    insideToolImage("node:14") {
       stage('Install dependencies and build') {
         sh 'npm ci'
       }
