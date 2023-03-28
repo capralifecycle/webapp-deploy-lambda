@@ -70,9 +70,3 @@ python -m webapp_deploy.main s3://my-bucket/my-release.tgz
 
 - To avoid a race condition in using and updating the deployment log, no
   concurrent execution of the lambda should be allowed.
-
-- As we use S3 to hold the deployment log, there is a potential for a
-  successive deployment to read an older deployment log. This is due
-  to the fact that S3 is eventually consistent. If this happens the files
-  that were deployed by the previous run (being overwritten) will
-  be kept forever, unless they are also references by another deployment.
