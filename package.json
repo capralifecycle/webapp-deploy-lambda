@@ -4,7 +4,7 @@
   "description": "CDK construct for deploying a webapp release to S3 and CloudFront",
   "repository": {
     "type": "git",
-    "url": "https://github.com/capraconsulting/webapp-deploy-lambda"
+    "url": "https://github.com/capralifecycle/webapp-deploy-lambda"
   },
   "scripts": {
     "build": "./build.sh && tsc",
