@@ -42,7 +42,10 @@ longer have any reference to them.
 aws lambda invoke \
   --function-name my-deploy-lambda \
   --payload '{
-    "artifactS3Url": "s3://my-bucket/my-release.tgz"
+    "ResourceProperties": {
+      "artifactS3Url": "s3://my-bucket/my-release.tgz"
+    }, 
+    "RequestType": "Update"
   }' \
   /tmp/out.log
 ```
