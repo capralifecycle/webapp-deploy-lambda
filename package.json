@@ -26,11 +26,16 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
-    "dist/webapp_deploy/**/*",
-    "lib/**/*"
+    "dist/webapp_deploy",
+    "lib"
   ],
   "publishConfig": {
     "access": "public"
+  },
+  "overrides": {
+    "semantic-release": {
+      "@semantic-release/npm": "10.0.6"
+    }
   },
   "devDependencies": {
     "@aws-cdk/assert": "2.68.0",
