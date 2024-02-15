@@ -38,7 +38,7 @@ jobs:
           python-version: 3.8.18
 
       - name: python - setup dependency cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: venv-${{ runner.os }}-${{ steps.setup_python.outputs.python-version}}-${{ hashFiles('requirements.txt') }}
           path: .venv
