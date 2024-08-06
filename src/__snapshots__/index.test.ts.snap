@@ -70,7 +70,7 @@ exports[`WebappDeploy 1`] = `
       "Properties": {
         "Code": {
           "S3Bucket": "cdk-hnb659fds-assets-123456789123-eu-west-1",
-          "S3Key": "3542be390685e0c8353d92ccb5796d343cd93ca946b6b0de798004206a199adc.zip",
+          "S3Key": "d9861ea7a45affd23e47a614acb2fddc6e45c20a891284c958187dafbf9ee36b.zip",
         },
         "Description": "AWS CDK resource provider framework - onEvent (Stack/WebappDeploy/Provider)",
         "Environment": {
@@ -90,7 +90,7 @@ exports[`WebappDeploy 1`] = `
             "Arn",
           ],
         },
-        "Runtime": "nodejs18.x",
+        "Runtime": "nodejs20.x",
         "Timeout": 900,
       },
       "Type": "AWS::Lambda::Function",
@@ -355,7 +355,7 @@ exports[`WebappDeploy with source 1`] = `
       "Properties": {
         "Code": {
           "S3Bucket": "cdk-hnb659fds-assets-123456789123-eu-west-1",
-          "S3Key": "3542be390685e0c8353d92ccb5796d343cd93ca946b6b0de798004206a199adc.zip",
+          "S3Key": "d9861ea7a45affd23e47a614acb2fddc6e45c20a891284c958187dafbf9ee36b.zip",
         },
         "Description": "AWS CDK resource provider framework - onEvent (Stack/WebappDeploy/Provider)",
         "Environment": {
@@ -375,7 +375,7 @@ exports[`WebappDeploy with source 1`] = `
             "Arn",
           ],
         },
-        "Runtime": "nodejs18.x",
+        "Runtime": "nodejs20.x",
         "Timeout": 900,
       },
       "Type": "AWS::Lambda::Function",
