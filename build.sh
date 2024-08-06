@@ -1,13 +1,12 @@
 #!/bin/bash
 set -eux -o pipefail
 
-[ ! -d dist ] || rm -rf dist
-
+rm -rf dist
 mkdir dist
-
 cp -r webapp_deploy dist/
+
 if [ -e dist/webapp_deploy/__pycache__ ]; then
-  rm dist/webapp_deploy/__pycache__ -rf
+  rm -rf dist/webapp_deploy/__pycache__
 fi
 
 # We currently do not install requirements.txt as the
