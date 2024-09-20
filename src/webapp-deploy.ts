@@ -95,7 +95,7 @@ export class WebappDeploy extends constructs.Construct {
       functionName: props.functionName ?? cdk.PhysicalName.GENERATE_IF_NEEDED,
       handler: "webapp_deploy.main.handler",
       reservedConcurrentExecutions: 1,
-      runtime: lambda.Runtime.PYTHON_3_8,
+      runtime: lambda.Runtime.PYTHON_3_12,
       timeout: cdk.Duration.minutes(2),
       initialPolicy: [
         new iam.PolicyStatement({
