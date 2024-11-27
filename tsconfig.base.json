@@ -2,11 +2,11 @@
   "compilerOptions": {
     "outDir": "./lib",
     "declaration": true,
-    "target": "ES2018",
-    "module": "commonjs",
+    "target": "es2022",
     "strict": true,
     "inlineSourceMap": true,
     "inlineSources": true,
-    "strictPropertyInitialization": false
+
+    "module": "preserve"
   }
 }
