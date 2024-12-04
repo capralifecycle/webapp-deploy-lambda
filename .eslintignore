@@ -1,7 +1,0 @@
-*.d.ts
-/src/**/*.js
-/lib/
-/cdk.out/
-commitlint.config.js
-example-assets/source/index.js
-jest.config.js
