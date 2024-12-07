@@ -8,14 +8,14 @@ threshold.
 What it does:
 
 1. Fetch deployment log from S3
-1. Fetch bundled artifact and extract locally with optional filtering
-1. Upload all non-html files to S3
-1. Upload html files to S3
-1. Add uploaded items to deployment log
-1. Delete old items from S3
-1. Prune old deployments from deployment log
-1. Store deployment log to S3 for next run
-1. Optionally invalidate CloudFront distribution
+2. Fetch bundled artifact and extract locally with optional filtering
+3. Upload all non-html files to S3
+4. Upload html files to S3
+5. Add uploaded items to deployment log
+6. Delete old items from S3
+7. Prune old deployments from deployment log
+8. Store deployment log to S3 for next run
+9. Optionally invalidate CloudFront distribution
 
 ## Preserving old files
 
@@ -44,7 +44,7 @@ aws lambda invoke \
   --payload '{
     "ResourceProperties": {
       "artifactS3Url": "s3://my-bucket/my-release.tgz"
-    }, 
+    },
     "RequestType": "Update"
   }' \
   /tmp/out.log
