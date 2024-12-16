@@ -108,6 +108,5 @@ export class Source {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 }
