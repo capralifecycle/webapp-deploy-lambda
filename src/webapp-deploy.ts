@@ -7,6 +7,9 @@ import * as cdk from "aws-cdk-lib"
 import { Provider } from "aws-cdk-lib/custom-resources"
 import * as path from "path"
 import { ISource } from "./source"
+import { fileURLToPath } from "url"
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export interface WebappDeployProps {
   /**
