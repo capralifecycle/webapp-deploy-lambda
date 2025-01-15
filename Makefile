@@ -57,3 +57,7 @@ py-lint:
 	@echo "=== Running target: py-lint ==="
 	$(VENV)/flake8 --exclude .venv webapp_deploy
 	$(VENV)/black --check webapp_deploy
+
+.PHONY: clean
+clean:
+	rm -rf dist/ lib/
