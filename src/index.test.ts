@@ -6,6 +6,9 @@ import "jest-cdk-snapshot"
 import * as path from "path"
 import { WebappDeploy } from "."
 import { Source } from "./source"
+import { fileURLToPath } from "url"
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 test("WebappDeploy", () => {
   const app = new cdk.App()

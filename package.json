@@ -10,7 +10,7 @@
   "scripts": {
     "build": "./build.sh && tsc",
     "watch": "tsc -w",
-    "test": "jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "prepare": "npm run build && husky",
