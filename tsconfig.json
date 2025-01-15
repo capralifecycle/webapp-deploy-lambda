@@ -7,7 +7,7 @@
     "resolveJsonModule": true,
     "moduleDetection": "force",
     "isolatedModules": true,
-    "noEmit": true,
+    "noEmit": false,
     "verbatimModuleSyntax": false,
 
     "lib": [
