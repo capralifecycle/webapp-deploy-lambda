@@ -6,7 +6,8 @@
     "strict": true,
     "inlineSourceMap": true,
     "inlineSources": true,
+    "moduleResolution": "node",
 
-    "module": "preserve"
+    "module": "es2022"
   }
 }
