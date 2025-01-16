@@ -58,6 +58,11 @@ py-lint:
 	$(VENV)/flake8 --exclude .venv webapp_deploy
 	$(VENV)/black --check webapp_deploy
 
+.PHONY: snapshots
+snapshots:
+	@echo "=== Running target: snapshots ==="
+	npm test -- --updateSnapshot
+
 .PHONY: clean
 clean:
 	rm -rf dist/ lib/
