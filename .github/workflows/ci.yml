@@ -32,7 +32,7 @@ jobs:
 
       - uses: capralifecycle/actions-lib/configure-npm@a6d9e4b11cdae620cc8e7fcc121de8466f6cfde9 # v1.6.0
 
-      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
         id: setup-python
         with:
           python-version: 3.8.18
