@@ -3,6 +3,11 @@ on:
   push:
     branches:
       - "**"
+  workflow_dispatch:
+  workflow_run:
+    workflows: [ "update-snapshots" ]
+    types:
+      - completed
 
 defaults:
   run:
