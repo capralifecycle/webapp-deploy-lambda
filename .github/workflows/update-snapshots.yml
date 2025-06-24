@@ -90,10 +90,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           # stage Jest snapshot changes
-          git add src
-
-          # stage CDK snapshot changes
-          git add __snapshots__
+          git add src/__snapshots__
 
           git commit -m "chore: update snapshots triggered by comment [skip ci]"
 
