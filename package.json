@@ -11,8 +11,8 @@
     "build": "./build.sh && tsc",
     "watch": "tsc -w",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
+    "lint": "biome check",
+    "lint:fix": "biome check --fix",
     "prepare": "npm run build && husky",
     "semantic-release": "semantic-release"
   },
@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "@aws-cdk/assert": "2.68.0",
+    "@biomejs/biome": "2.0.6",
     "@commitlint/cli": "19.8.1",
     "@commitlint/config-conventional": "19.8.1",
     "@types/jest": "30.0.0",
