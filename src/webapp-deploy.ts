@@ -1,3 +1,5 @@
+import * as path from "node:path"
+import { fileURLToPath } from "node:url"
 import * as cdk from "aws-cdk-lib"
 import type * as cloudfront from "aws-cdk-lib/aws-cloudfront"
 import * as iam from "aws-cdk-lib/aws-iam"
@@ -5,8 +7,6 @@ import * as lambda from "aws-cdk-lib/aws-lambda"
 import type * as s3 from "aws-cdk-lib/aws-s3"
 import { Provider } from "aws-cdk-lib/custom-resources"
 import * as constructs from "constructs"
-import * as path from "path"
-import { fileURLToPath } from "url"
 import type { ISource } from "./source"
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
