@@ -1,7 +1,7 @@
-import * as constructs from "constructs"
-import * as iam from "aws-cdk-lib/aws-iam"
-import * as s3 from "aws-cdk-lib/aws-s3"
+import type * as iam from "aws-cdk-lib/aws-iam"
+import type * as s3 from "aws-cdk-lib/aws-s3"
 import * as s3Assets from "aws-cdk-lib/aws-s3-assets"
+import type * as constructs from "constructs"
 
 // This is mostly based on aws-s3-deployment from aws-cdk.
 
