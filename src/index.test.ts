@@ -1,12 +1,12 @@
+import * as cdk from "aws-cdk-lib"
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront"
 import * as iam from "aws-cdk-lib/aws-iam"
 import * as s3 from "aws-cdk-lib/aws-s3"
-import * as cdk from "aws-cdk-lib"
 import "jest-cdk-snapshot"
 import * as path from "path"
+import { fileURLToPath } from "url"
 import { WebappDeploy } from "."
 import { Source } from "./source"
-import { fileURLToPath } from "url"
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
