@@ -84,6 +84,10 @@ exports[`WebappDeploy 1`] = `
           },
         },
         "Handler": "framework.onEvent",
+        "LoggingConfig": {
+          "ApplicationLogLevel": "FATAL",
+          "LogFormat": "JSON",
+        },
         "Role": {
           "Fn::GetAtt": [
             "WebappDeployProviderframeworkonEventServiceRole6401B28E",
@@ -379,6 +383,10 @@ exports[`WebappDeploy with source 1`] = `
           },
         },
         "Handler": "framework.onEvent",
+        "LoggingConfig": {
+          "ApplicationLogLevel": "FATAL",
+          "LogFormat": "JSON",
+        },
         "Role": {
           "Fn::GetAtt": [
             "WebappDeployProviderframeworkonEventServiceRole6401B28E",
