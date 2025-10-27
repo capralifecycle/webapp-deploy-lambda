@@ -66,3 +66,8 @@ snapshots:
 .PHONY: clean
 clean:
 	rm -rf dist/ lib/
+
+.PHONY: upgrade-deps
+upgrade-deps:
+	@echo "=== Running target: upgrade-deps ==="
+	npm run upgrade-dependencies
