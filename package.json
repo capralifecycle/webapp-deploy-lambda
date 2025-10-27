@@ -15,7 +15,8 @@
     "lint:fix": "biome check --fix",
     "prepare": "npm run build && husky",
     "semantic-release": "semantic-release",
-    "upgrade-dependencies": "ncu --upgrade --install always --format group"
+    "upgrade-dependencies": "ncu --upgrade --install always --format group",
+    "biome-migrate": "biome migrate --write"
   },
   "keywords": [
     "cdk",

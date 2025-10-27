@@ -71,3 +71,8 @@ clean:
 upgrade-deps:
 	@echo "=== Running target: upgrade-deps ==="
 	npm run upgrade-dependencies
+
+.PHONY: biome-migrate
+biome-migrate:
+	@echo "=== Running target: biome-migrate ==="
+	npm run biome-migrate
