@@ -14,7 +14,8 @@
     "lint": "biome check",
     "lint:fix": "biome check --fix",
     "prepare": "npm run build && husky",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "upgrade-dependencies": "ncu --upgrade --install always --format group"
   },
   "keywords": [
     "cdk",
@@ -46,6 +47,7 @@
     "husky": "9.1.7",
     "jest": "30.2.0",
     "jest-cdk-snapshot": "2.3.6",
+    "npm-check-updates": "19.1.1",
     "semantic-release": "25.0.1",
     "ts-jest": "29.4.5",
     "tsx": "4.20.6",
