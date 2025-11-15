@@ -42,7 +42,7 @@
     "@commitlint/cli": "20.1.0",
     "@commitlint/config-conventional": "20.0.0",
     "@types/jest": "30.0.0",
-    "@types/node": "24.9.1",
+    "@types/node": "24.10.1",
     "aws-cdk-lib": "2.223.0",
     "constructs": "10.4.3",
     "husky": "9.1.7",
