@@ -80,11 +80,15 @@ def cleanup_delete_files(s3_target, files):
         logger.info("Deleting %s" % filename)
         objects.append({"Key": os.path.join(s3_target_key, filename)})
 
-    result = s3_client.delete_objects(
-        Bucket=s3_target_bucket, Delete={"Objects": objects}
-    )
-    if "Errors" in result and len(result["Errors"]) > 0:
-        logger.warn("Errors during delete: %s" % result["Errors"])
+    # S3 delete_objects can only delete 1000 objects at a time
+    batch_size = 1000
+    for i in range(0, len(objects), batch_size):
+        batch = objects[i : i + batch_size]
+        result = s3_client.delete_objects(
+            Bucket=s3_target_bucket, Delete={"Objects": batch}
+        )
+        if "Errors" in result and len(result["Errors"]) > 0:
+            logger.warn("Errors during delete: %s" % result["Errors"])
 
 
 def cleanup(items, s3_target, expiry):
