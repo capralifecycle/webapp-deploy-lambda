@@ -55,18 +55,16 @@ aws lambda invoke \
 Testing locally:
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+$ uv sync
 
 # Adjust to your project. See config.py for full list.
-export TARGET_BUCKET_URL=s3://my-website/web
-export EXPIRE_SECONDS=86400
-export DEPLOY_LOG_BUCKET_URL=s3://my-website/deployments.log
-export CF_DISTRIBUTION_ID=EKJ2IPY1KTEAR1
+$ export TARGET_BUCKET_URL=s3://my-website/web
+$ export EXPIRE_SECONDS=86400
+$ export DEPLOY_LOG_BUCKET_URL=s3://my-website/deployments.log
+$ export CF_DISTRIBUTION_ID=EKJ2IPY1KTEAR1
 
 # Adjust artifact path.
-python -m webapp_deploy.main s3://my-bucket/my-release.tgz
+$ uv run python -m webapp_deploy.main s3://my-bucket/my-release.tgz
 ```
 
 ## Notes
