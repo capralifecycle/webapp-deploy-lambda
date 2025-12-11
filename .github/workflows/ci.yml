@@ -34,41 +34,21 @@ jobs:
 
       - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
-          node-version: 24
+          node-version-file: ".node-version"
+          cache: "npm"
 
       - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         id: setup-python
         with:
-          python-version: "3.14"
+          python-version-file: ".python-version"
 
-      - name: python - setup dependency cache
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      - name: python - setup uv
+        uses: astral-sh/setup-uv@ed21f2f24f8dd64503750218de024bcf64c7250a # v7.1.5
         with:
-          key: venv-${{ runner.os }}-${{ steps.setup_python.outputs.python-version}}-${{ hashFiles('requirements.txt') }}
-          path: .venv
+          enable-cache: true
 
-      - name: python - install dependencies
-        run: |
-          python -m venv .venv
-          source .venv/bin/activate
-          python -m pip install -r requirements.txt
-          echo "$VIRTUAL_ENV/bin" >> $GITHUB_PATH
-          echo "VIRTUAL_ENV=$VIRTUAL_ENV" >> $GITHUB_ENV
-
-      - name: python - lint
-        run: make py-lint
-
-      - name: python - test
-        run: make py-test
-
-      - name: npm - install dependencies
-        run: npm ci
-
-      - name: npm - lint
-        run: make npm-lint
-
-      - name: npm - test
-        run: make npm-test
+      - name: build and verify
+        run: make ci
 
       - name: conditionally semantic release
         if: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}

@@ -49,7 +49,7 @@ def check_items(items, expiry):
     files to be deleted.
     """
 
-    deployments = list(set([i.time for i in items]))
+    deployments = list({i.time for i in items})
     deployments_old = sorted([i for i in deployments if i < expiry])
 
     if len(deployments_old) <= 1:
@@ -57,19 +57,22 @@ def check_items(items, expiry):
 
     delete_older_than = deployments_old[-1]
 
-    keep_files = list(set([i.filename for i in items if i.time >= delete_older_than]))
+    keep_files = list({i.filename for i in items if i.time >= delete_older_than})
 
     delete_files = list(
-        set(
-            [
-                i.filename
-                for i in items
-                if i.time < delete_older_than and i.filename not in keep_files
-            ]
-        )
+        {
+            i.filename
+            for i in items
+            if i.time < delete_older_than and i.filename not in keep_files
+        }
     )
 
     return [i for i in items if i.time >= delete_older_than], delete_files
+
+
+def batch_items(items, batch_size):
+    for i in range(0, len(items), batch_size):
+        yield items[i : i + batch_size]
 
 
 def cleanup_delete_files(s3_target, files):
@@ -81,9 +84,7 @@ def cleanup_delete_files(s3_target, files):
         objects.append({"Key": os.path.join(s3_target_key, filename)})
 
     # S3 delete_objects can only delete 1000 objects at a time
-    batch_size = 1000
-    for i in range(0, len(objects), batch_size):
-        batch = objects[i : i + batch_size]
+    for batch in batch_items(objects, 1000):
         result = s3_client.delete_objects(
             Bucket=s3_target_bucket, Delete={"Objects": batch}
         )
@@ -153,7 +154,7 @@ def extract(artifact_s3_url, source, dest, exclude_pattern):
 
 def construct_all_files(temp_dir, s3_upload_key_base):
     all_files = []
-    for root, dirs, files in os.walk(temp_dir):
+    for root, _dirs, files in os.walk(temp_dir):
         for filename in files:
             local_path = os.path.join(root, filename)
             relpath = os.path.relpath(local_path, temp_dir)
