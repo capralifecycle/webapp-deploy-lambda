@@ -47,7 +47,7 @@
     "@types/jest": "30.0.0",
     "@types/node": "24.10.9",
     "aws-cdk-lib": "2.232.2",
-    "constructs": "10.4.4",
+    "constructs": "10.4.5",
     "husky": "9.1.7",
     "jest": "30.2.0",
     "jest-cdk-snapshot": "2.3.6",
