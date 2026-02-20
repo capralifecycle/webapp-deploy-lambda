@@ -2,4 +2,4 @@
 idiomatic_version_file_enable_tools = ["python", "node"]
 
 [tools]
-uv = "0.10.2"
+uv = "0.10.3"
