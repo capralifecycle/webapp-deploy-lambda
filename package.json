@@ -18,7 +18,7 @@
     "fmt:check": "biome format",
     "prepare": "npm run build && husky",
     "semantic-release": "semantic-release",
-    "upgrade-dependencies": "ncu --upgrade --install always --format group",
+    "upgrade-dependencies": "ncu --upgrade --install always --format group --reject @types/node",
     "biome-migrate": "biome migrate --write"
   },
   "keywords": [
