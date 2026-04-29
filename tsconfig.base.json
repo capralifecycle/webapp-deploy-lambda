@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
     "outDir": "./lib",
+    "rootDir": "./src",
     "declaration": true,
     "target": "es2022",
     "strict": true,
     "inlineSourceMap": true,
     "inlineSources": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    "ignoreDeprecations": "6.0",
 
     "module": "es2022"
   }
