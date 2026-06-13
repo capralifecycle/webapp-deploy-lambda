@@ -52,7 +52,7 @@
     "jest": "30.4.2",
     "jest-cdk-snapshot": "2.3.6",
     "npm-check-updates": "22.2.3",
-    "semantic-release": "25.0.3",
+    "semantic-release": "25.0.5",
     "ts-jest": "29.4.11",
     "tsx": "4.22.4",
     "typescript": "6.0.3"
