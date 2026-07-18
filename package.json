@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@aws-cdk/assert": "2.68.0",
-    "@biomejs/biome": "2.5.3",
+    "@biomejs/biome": "2.5.4",
     "@commitlint/cli": "21.2.1",
     "@commitlint/config-conventional": "21.2.0",
     "@types/jest": "30.0.0",
