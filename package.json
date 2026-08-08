@@ -55,7 +55,7 @@
     "semantic-release": "25.0.9",
     "ts-jest": "29.4.12",
     "tsx": "4.23.7",
-    "typescript": "6.0.3"
+    "typescript": "7.0.2"
   },
   "peerDependencies": {
     "aws-cdk-lib": "^2.0.0",
