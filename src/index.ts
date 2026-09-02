@@ -1,4 +1,4 @@
-export type { ISource, SourceConfig } from "./source"
-export { Source } from "./source"
-export type { WebappDeployProps } from "./webapp-deploy"
-export { WebappDeploy } from "./webapp-deploy"
+export type { ISource, SourceConfig } from "./source.ts"
+export { Source } from "./source.ts"
+export type { WebappDeployProps } from "./webapp-deploy.ts"
+export { WebappDeploy } from "./webapp-deploy.ts"

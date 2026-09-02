@@ -9,6 +9,8 @@
     "isolatedModules": true,
     "noEmit": false,
     "verbatimModuleSyntax": false,
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
 
     "lib": [
       "es2022"

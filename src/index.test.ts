@@ -1,16 +1,19 @@
+import * as path from "node:path"
+import test from "node:test"
+import { fileURLToPath } from "node:url"
+import { cdkTemplate, configureCdkSnapshots } from "@liflig/cdk-snapshot/node"
 import * as cdk from "aws-cdk-lib"
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront"
 import * as iam from "aws-cdk-lib/aws-iam"
 import * as s3 from "aws-cdk-lib/aws-s3"
-import "@liflig/cdk-snapshot/jest"
-import * as path from "node:path"
-import { fileURLToPath } from "node:url"
-import { WebappDeploy } from "."
-import { Source } from "./source"
+import { WebappDeploy } from "./index.ts"
+import { Source } from "./source.ts"
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-test("WebappDeploy", () => {
+configureCdkSnapshots()
+
+test("WebappDeploy", (t) => {
   const app = new cdk.App()
   const stack = new cdk.Stack(app, "Stack", {
     env: {
@@ -47,10 +50,10 @@ test("WebappDeploy", () => {
 
   webappDeploy.deployFn.grantInvoke(callerRole)
 
-  expect(stack).toMatchCdkSnapshot()
+  t.assert.snapshot(cdkTemplate(stack))
 })
 
-test("WebappDeploy with source", () => {
+test("WebappDeploy with source", (t) => {
   const app = new cdk.App()
   const stack = new cdk.Stack(app, "Stack", {
     env: {
@@ -80,5 +83,5 @@ test("WebappDeploy with source", () => {
     webBucket,
   })
 
-  expect(stack).toMatchCdkSnapshot()
+  t.assert.snapshot(cdkTemplate(stack))
 })

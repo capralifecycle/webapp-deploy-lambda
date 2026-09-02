@@ -10,8 +10,8 @@
   "scripts": {
     "build": "./build.sh && tsc",
     "watch": "tsc -w",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "test:update": "NODE_OPTIONS=--experimental-vm-modules jest --updateSnapshot",
+    "test": "node --test \"src/**/*.test.ts\"",
+    "test:update": "node --test --test-update-snapshots \"src/**/*.test.ts\"",
     "lint": "biome check",
     "lint:fix": "biome check --fix",
     "fmt": "biome format --write",
@@ -40,21 +40,16 @@
     "provenance": true
   },
   "devDependencies": {
-    "@aws-cdk/assert": "2.68.0",
     "@biomejs/biome": "2.5.10",
     "@commitlint/cli": "21.2.2",
     "@commitlint/config-conventional": "21.2.2",
-    "@liflig/cdk-snapshot": "file:../cdk-snapshot",
-    "@types/jest": "30.0.0",
+    "@liflig/cdk-snapshot": "1.0.0",
     "@types/node": "24.13.3",
     "aws-cdk-lib": "2.266.0",
     "constructs": "10.8.1",
     "husky": "9.1.7",
-    "jest": "30.4.2",
     "npm-check-updates": "23.0.2",
     "semantic-release": "25.0.9",
-    "ts-jest": "29.4.12",
-    "tsx": "4.23.12",
     "typescript": "6.0.3"
   },
   "peerDependencies": {
