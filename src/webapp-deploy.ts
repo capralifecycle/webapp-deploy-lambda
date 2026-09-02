@@ -7,7 +7,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda"
 import type * as s3 from "aws-cdk-lib/aws-s3"
 import { Provider } from "aws-cdk-lib/custom-resources"
 import * as constructs from "constructs"
-import type { ISource } from "./source"
+import type { ISource } from "./source.ts"
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
