@@ -48,7 +48,7 @@
     "aws-cdk-lib": "2.267.0",
     "constructs": "10.8.1",
     "husky": "9.1.7",
-    "npm-check-updates": "23.0.2",
+    "npm-check-updates": "23.1.0",
     "semantic-release": "25.0.9",
     "typescript": "7.0.2"
   },
