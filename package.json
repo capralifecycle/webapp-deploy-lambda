@@ -40,7 +40,7 @@
     "provenance": true
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.14",
+    "@biomejs/biome": "2.5.15",
     "@commitlint/cli": "21.2.3",
     "@commitlint/config-conventional": "21.2.3",
     "@liflig/cdk-snapshot": "1.2.0",
