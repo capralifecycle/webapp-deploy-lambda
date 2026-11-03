@@ -123,7 +123,9 @@ py-test:
 	TARGET_BUCKET_URL=s3://dummy/web \
 	EXPIRE_SECONDS=86400 \
 	DEPLOY_LOG_BUCKET_URL=s3://dummy/deployments.log \
-	uv run python -m unittest discover webapp_deploy
+	uv run coverage run --omit=webapp_deploy/test.py -m unittest discover webapp_deploy
+	mkdir -p coverage
+	uv run coverage lcov -o coverage/py.lcov
 
 .PHONY: py-clean
 py-clean:
