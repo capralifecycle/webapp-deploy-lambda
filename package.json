@@ -10,7 +10,7 @@
   "scripts": {
     "build": "./build.sh && tsc",
     "watch": "tsc -w",
-    "test": "node --test \"src/**/*.test.ts\"",
+    "test": "mkdir -p coverage && node --test --experimental-test-coverage --test-coverage-exclude='**/*.test.ts' --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=coverage/lcov.info \"src/**/*.test.ts\"",
     "test:update": "node --test --test-update-snapshots \"src/**/*.test.ts\"",
     "lint": "biome check",
     "lint:fix": "biome check --fix",
